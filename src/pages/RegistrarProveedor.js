@@ -13,7 +13,7 @@ export default function RegistrarProveedor() {
         razon_social_proveedor:"",
         correo_electronico_proveedor:""
     })
-    const{nombre_proveedor, rubro, cuit_proveedor, direccion_proveedor, telefono_proveedor, razon_social_proveedor, correo_electronico_proveedor}= proveedor
+    const{correo_electronico_proveedor, cuit_proveedor, direccion_proveedor, nombre_proveedor, razon_social_proveedor, rubro, telefono_proveedor, }= proveedor
     const onInputChange= (e)=> {
         //spread operator ...
         setProveedor({...proveedor, [e.target.name]: e.target.value})
@@ -22,7 +22,7 @@ export default function RegistrarProveedor() {
         e.preventDefault();
         const urlBase= "http://localhost:8082/gestion-de-pagos/proveedor";
         await axios.post(urlBase, proveedor);
-        navegacion('/'); 
+        navegacion('/proveedores'); 
     }
   return (
     <div className='container mx-auto p-4 pe-4'>
@@ -59,7 +59,7 @@ export default function RegistrarProveedor() {
         <input type="email" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="correo_electronico_proveedor" name="correo_electronico_proveedor" required={true} value={correo_electronico_proveedor} onChange={(e)=>onInputChange(e)}/>
     </div>  
     <div className='text-center mt-6'>
-        <button type="submit" className="bg-blue-700 text-white px-4 py-2 rounded-md text-sm mr-3">Registrar</button>
+        <button type="submit" href='/proveedores' className="bg-blue-700 text-white px-4 py-2 rounded-md text-sm mr-3">Registrar</button>
         <a href='/proveedores' className='bg-red-500 text-white px-6 py-2 rounded-md text-sm mr-3'>Regresar</a>
     </div>
     
