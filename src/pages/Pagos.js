@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export default function Pagos() {
-  const [formasPago, setFormasPago] = useState([{ tipo: '', monto: '' }]);
+  const [formasPago, setFormasPago] = useState([{ tipo: "", monto: "" }]);
   const [datosProveedor, setDatosProveedor] = useState({
-    nombre: '',
-    email: '',
-    direccion: '',
-    telefono: '',
+    nombre: "",
+    email: "",
+    direccion: "",
+    telefono: "",
   });
-  const [descripcion, setDescripcion] = useState('');
+  const [descripcion, setDescripcion] = useState("");
   const [total, setTotal] = useState(0);
 
   const handleDatosProveedorChange = (event) => {
@@ -24,7 +24,7 @@ export default function Pagos() {
   };
 
   const agregarFormaPago = () => {
-    setFormasPago([...formasPago, { tipo: '', monto: '' }]);
+    setFormasPago([...formasPago, { tipo: "", monto: "" }]);
   };
 
   const eliminarFormaPago = (index) => {
@@ -34,19 +34,27 @@ export default function Pagos() {
 
   useEffect(() => {
     // Calcula el total cada vez que cambie el estado de formasPago
-    const nuevoTotal = formasPago.reduce((sum, { monto }) => sum + parseFloat(monto || 0), 0);
+    const nuevoTotal = formasPago.reduce(
+      (sum, { monto }) => sum + parseFloat(monto || 0),
+      0
+    );
     setTotal(nuevoTotal);
   }, [formasPago]);
 
   return (
     <form className="space-y-8 p-6 bg-white shadow-md rounded-lg">
       <div className="border-b border-gray-300 pb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Datos del Proveedor</h1>
+        <h1 className="text-2xl font-bold text-gray-900">
+          Datos del Proveedor
+        </h1>
 
         <div className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
           {/* Nombre del Proveedor */}
           <div className="sm:col-span-1">
-            <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="nombre"
+              className="block text-sm font-medium text-gray-700"
+            >
               Nombre del Proveedor
             </label>
             <input
@@ -61,7 +69,10 @@ export default function Pagos() {
 
           {/* Email del Proveedor */}
           <div className="sm:col-span-1">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -76,7 +87,10 @@ export default function Pagos() {
 
           {/* Dirección del Proveedor */}
           <div className="sm:col-span-2">
-            <label htmlFor="direccion" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="direccion"
+              className="block text-sm font-medium text-gray-700"
+            >
               Dirección
             </label>
             <input
@@ -90,18 +104,38 @@ export default function Pagos() {
           </div>
 
           {/* Teléfono del Proveedor */}
-          <div className="sm:col-span-1">
-            <label htmlFor="telefono" className="block text-sm font-medium text-gray-700">
-              Teléfono
-            </label>
-            <input
-              id="telefono"
-              name="telefono"
-              type="tel"
-              value={datosProveedor.telefono}
-              onChange={handleDatosProveedorChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-            />
+          <div className="w-full mx-1 gap-3 flex">
+            <div className="hili">
+              <label
+                htmlFor="telefono"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Teléfono
+              </label>
+              <input
+                id="telefono"
+                name="telefono"
+                type="tel"
+                value={datosProveedor.telefono}
+                onChange={handleDatosProveedorChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+              />
+            </div>
+            <div className="hola">
+              <label
+                htmlFor="numeroFactura"
+                className="block text-sm font-medium text-gray-700"
+              >
+                N° Factura
+              </label>
+              <input
+                id="numeroFactura"
+                name="numeroFactura"
+                type="text"
+                // value="numeroFactura"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-100 focus:ring focus:ring-indigo-100 focus:ring-opacity-50"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -114,7 +148,10 @@ export default function Pagos() {
             <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6">
               {/* Tipo de Pago */}
               <div className="sm:col-span-1">
-                <label htmlFor={`tipo_${index}`} className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor={`tipo_${index}`}
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Tipo de Pago
                 </label>
                 <select
@@ -125,17 +162,20 @@ export default function Pagos() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                 >
                   <option value="">Seleccionar</option>
-                  <option value="Transferencia">Transferencia bancaria</option>
+                  <option value="Transferencia">Transferencia </option>
                   <option value="Efectivo">Efectivo</option>
                   <option value="Cheque">Cheque</option>
-                  <option value="Tarjeta">Tarjeta de crédito</option>
+                  <option value="Tarjeta">Tarjeta de debito</option>
                   {/* Agrega más opciones si es necesario */}
                 </select>
               </div>
 
               {/* Monto */}
               <div className="sm:col-span-1">
-                <label htmlFor={`monto_${index}`} className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor={`monto_${index}`}
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Monto
                 </label>
                 <input
@@ -144,6 +184,21 @@ export default function Pagos() {
                   type="number"
                   value={pago.monto}
                   onChange={(event) => handleFormaPagoChange(index, event)}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                />
+              </div>
+
+              <div className="sm:col-span-1">
+                <label
+                  htmlFor={`monto_${index}`}
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Nro de operción
+                </label>
+                <input
+                  id="numopera"
+                  name="numopera"
+                  type="number"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                 />
               </div>
@@ -176,7 +231,10 @@ export default function Pagos() {
 
       {/* Descripción */}
       <div className="border-b border-gray-300 pb-6">
-        <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="descripcion"
+          className="block text-sm font-medium text-gray-700"
+        >
           Descripción
         </label>
         <textarea
@@ -192,7 +250,9 @@ export default function Pagos() {
       {/* Total */}
       <div className="flex justify-between items-center border-t border-gray-300 pt-6">
         <span className="text-lg font-semibold text-gray-900">Total</span>
-        <span className="text-lg font-semibold text-gray-900">${total.toFixed(2)}</span>
+        <span className="text-lg font-semibold text-gray-900">
+          ${total.toFixed(2)}
+        </span>
       </div>
 
       {/* Botón de Guardar */}
