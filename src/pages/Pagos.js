@@ -230,21 +230,21 @@ export default function Pagos() {
       </div>
 
       {/* Descripción */}
-      <div className="border-b border-gray-300 pb-6">
+      <div className="border-b border-gray-300 w-full pb-6">
         <label
           htmlFor="descripcion"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-full font-medium text-gray-700"
         >
           Descripción
         </label>
         <textarea
           id="descripcion"
           name="descripcion"
-          rows="4"
+          rows="6" // Aumenta el número de filas
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-        />
+          className="w-1/2"/>
+      
       </div>
 
       {/* Total */}

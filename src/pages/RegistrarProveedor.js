@@ -27,7 +27,7 @@ export default function RegistrarProveedor() {
   return (
     <div className='container mx-auto p-4 pe-4'>
         <div className='text-center mb-8'>
-            <h3 className='text-2xl font-semibold'>Registrar Proveedor</h3>
+            <h3 className='text-2xl font-semibold'>Registrar Cliente</h3>
         </div>
     <form onSubmit={(e)=>onSubmit(e)}>
     <div className="mb-4">
