@@ -7,6 +7,7 @@ import Pagos from './pages/Pagos';
 import Proveedores from './pages/Proveedores';
 import RegistrarProveedor from './pages/RegistrarProveedor';
 import Login from './components/Login';
+import Comprobantes from './pages/comprobantes';
 
 function App() {
   const location = useLocation();
@@ -22,6 +23,8 @@ function App() {
           <Route path="/pagos" element={<Pagos />} />
           <Route path="/proveedores" element={<Proveedores />} />
           <Route path="/registrar-proveedor" element={<RegistrarProveedor />} />
+          <Route path="/comprobantes" element={<Comprobantes />} />
+
         </Routes>
       </div>
     </div>

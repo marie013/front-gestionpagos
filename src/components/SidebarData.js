@@ -20,5 +20,12 @@ export const SidebarData= [
         path:'/proveedores',
         icon: <IoIcons.IoMdPeople/>,
         cName: 'nav-text'
+    },
+    {
+        title:'Comprobantes',
+        path:'/comprobantes',
+        icon: <IoIcons.IoMdPeople/>,
+        cName: 'nav-text'
     }
+
 ]

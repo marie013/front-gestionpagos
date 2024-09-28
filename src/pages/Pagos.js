@@ -140,11 +140,11 @@ export default function Pagos() {
         </div>
       </div>
 
-      <div className="border-b border-gray-300 pb-6">
+      <div className="border-b border-gray-700 pb-6">
         <h2 className="text-xl font-bold text-gray-900">Formas de Pago</h2>
 
         {formasPago.map((pago, index) => (
-          <div key={index} className="mt-4 border-t border-gray-300 pt-4">
+          <div key={index} className="mt-4  border-gray-300 pt-4">
             <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6">
               {/* Tipo de Pago */}
               <div className="sm:col-span-1">
@@ -230,7 +230,7 @@ export default function Pagos() {
       </div>
 
       {/* Descripción */}
-      <div className="border-b border-gray-300 w-full pb-6">
+      <div className="border-b  w-full pb-6">
         <label
           htmlFor="descripcion"
           className="block text-full font-medium text-gray-700"
@@ -243,12 +243,12 @@ export default function Pagos() {
           rows="6" // Aumenta el número de filas
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
-          className="w-1/2"/>
+          className="w-1/2 border "/>
       
       </div>
 
       {/* Total */}
-      <div className="flex justify-between items-center border-t border-gray-300 pt-6">
+      <div className="flex justify-between items-center border-gray-300 pt-6">
         <span className="text-lg font-semibold text-gray-900">Total</span>
         <span className="text-lg font-semibold text-gray-900">
           ${total.toFixed(2)}
