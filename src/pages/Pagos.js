@@ -3,13 +3,16 @@ import { useState, useEffect } from "react";
 export default function Pagos() {
   const [formasPago, setFormasPago] = useState([{ tipo: "", monto: "" }]);
   const [datosProveedor, setDatosProveedor] = useState({
-    nombre: "",
-    email: "",
-    direccion: "",
+    nombre_cliente: "",
+    cuit_cliente: "",
+    direccion_cliente: "",
+    correo_electronico_cliente: "",
     telefono: "",
   });
   const [descripcion, setDescripcion] = useState("");
   const [total, setTotal] = useState(0);
+  const [estadoPago, setEstadoPago] = useState(""); // New state for payment status
+
 
   const handleDatosProveedorChange = (event) => {
     const { name, value } = event.target;
@@ -32,6 +35,10 @@ export default function Pagos() {
     setFormasPago(nuevasFormasPago);
   };
 
+  const handleEstadoPagoChange = (event) => {
+    setEstadoPago(event.target.value);
+  };
+
   useEffect(() => {
     // Calcula el total cada vez que cambie el estado de formasPago
     const nuevoTotal = formasPago.reduce(
@@ -45,7 +52,7 @@ export default function Pagos() {
     <form className="space-y-8 p-6 bg-white shadow-md rounded-lg">
       <div className="border-b border-gray-300 pb-6">
         <h1 className="text-2xl font-bold text-gray-900">
-          Datos del Proveedor
+          Datos del Cliente
         </h1>
 
         <div className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
@@ -55,13 +62,13 @@ export default function Pagos() {
               htmlFor="nombre"
               className="block text-sm font-medium text-gray-700"
             >
-              Nombre del Proveedor
+              Nombre del Cliente
             </label>
             <input
-              id="nombre"
-              name="nombre"
+              id="nombre_cliente"
+              name="nombre_cliente"
               type="text"
-              value={datosProveedor.nombre}
+              value={datosProveedor.nombre_cliente}
               onChange={handleDatosProveedorChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
             />
@@ -70,41 +77,59 @@ export default function Pagos() {
           {/* Email del Proveedor */}
           <div className="sm:col-span-1">
             <label
-              htmlFor="email"
+              htmlFor="cuit"
               className="block text-sm font-medium text-gray-700"
             >
-              Email
+              Cuit
             </label>
             <input
-              id="email"
-              name="email"
+              id="cuit_cliente"
+              name="cuit_cliente"
               type="email"
-              value={datosProveedor.email}
+              value={datosProveedor.cuit_cliente}
               onChange={handleDatosProveedorChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
             />
           </div>
 
           {/* Dirección del Proveedor */}
-          <div className="sm:col-span-2">
+          <div className="sm:col-span-1">
             <label
-              htmlFor="direccion"
+              htmlFor="direccion_cliente"
               className="block text-sm font-medium text-gray-700"
             >
               Dirección
             </label>
             <input
-              id="direccion"
-              name="direccion"
+              id="direccion_cliente"
+              name="direccion_cliente"
               type="text"
-              value={datosProveedor.direccion}
+              value={datosProveedor.direccion_cliente}
+              onChange={handleDatosProveedorChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+            />
+          </div>
+          
+          <div className="sm:col-span-1">
+            <label
+              htmlFor="  correo_electronico_cliente"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Correo
+            </label>
+            <input
+              id="  correo_electronico_cliente"
+              name="  correo_electronico_cliente"
+              type="  correo_electronico_cliente"
+              value={datosProveedor.  correo_electronico_cliente}
               onChange={handleDatosProveedorChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
             />
           </div>
 
+
           {/* Teléfono del Proveedor */}
-          <div className="w-full mx-1 gap-3 flex">
+          <div className="w-full mx-1 gap-9 flex">
             <div className="hili">
               <label
                 htmlFor="telefono"
@@ -121,7 +146,7 @@ export default function Pagos() {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
               />
             </div>
-            <div className="hola">
+            <div className="hola ">
               <label
                 htmlFor="numeroFactura"
                 className="block text-sm font-medium text-gray-700"
@@ -196,8 +221,8 @@ export default function Pagos() {
                   Nro de operción
                 </label>
                 <input
-                  id="numopera"
-                  name="numopera"
+                  id="num_pago"
+                  name="num_pago"
                   type="number"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                 />
@@ -222,13 +247,39 @@ export default function Pagos() {
           <button
             type="button"
             onClick={agregarFormaPago}
-            className="inline-flex items-center rounded-md bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="inline-flex items-center rounded-md 4 bg-blue-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Agregar Forma de Pago
           </button>
         </div>
       </div>
+     
 
+      <div className=" gray-1000 pb-6">
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Estado del Pago</h2>
+        <div className="sm:col-span-2">
+          <label
+            htmlFor="estadoPago"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Estado del Pago
+          </label>
+          <select
+            id="estadoPago"
+            name="estadoPago"
+            value={estadoPago}
+            onChange={handleEstadoPagoChange}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+          >
+            <option value="">Seleccionar estado</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Cancelado">Cancelado</option>
+            <option value="Parcial">Parcialmente Pagado</option>
+            <option value="EnProceso">En Proceso</option>
+            <option value="Rechazado">Rechazado</option>
+          </select>
+        </div>
+      </div>
       {/* Descripción */}
       <div className="border-b  w-full pb-6">
         <label
