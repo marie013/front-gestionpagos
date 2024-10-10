@@ -10,19 +10,25 @@ export const SidebarData= [
         cName: 'nav-text'
     },
     {
-        title:'Pagos',
+        title:'Registrar pago',
         path:'/pagos',
         icon: <IoIcons.IoIosPaper/>,
         cName: 'nav-text'
     },
     {
-        title:'Proveedores',
+        title:'Nuevo cliente',
         path:'/proveedores',
         icon: <IoIcons.IoMdPeople/>,
         cName: 'nav-text'
     },
     {
-        title:'Comprobantes',
+        title:'Clientes',
+        path:'/proveedores',
+        icon: <IoIcons.IoMdPeople/>,
+        cName: 'nav-text'
+    },
+    {
+        title:'Pagos',
         path:'/comprobantes',
         icon: <IoIcons.IoMdPeople/>,
         cName: 'nav-text'
