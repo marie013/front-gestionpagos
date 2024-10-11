@@ -3,41 +3,41 @@ import React, { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { Link } from "react-router-dom";
 
-export default function Proveedores() {
-  const urlBase = "http://localhost:8082/gestion-de-pagos/proveedor";
-  const [proveedores, setProveedor] = useState([]);
+export default function Clientes() {
+  const urlBase = "http://localhost:8082/gestion-de-pagos/clientes";
+  const [Clientes, setCliente] = useState([]);
 
   useEffect(() => {
-    listarProveedor();
+    listarCliente();
   }, []);
 
-  const listarProveedor = async () => {
+  const listarCliente = async () => {
     const resultado = await axios.get(urlBase);
     console.log("Resultado");
     console.log(resultado.data);
-    setProveedor(resultado.data);
+    setCliente(resultado.data);
   };
 
-  const eliminarProveedor = async (id) => {
+  const eliminarCliente = async (id) => {
     await axios.delete(`${urlBase}/${id}`);
-    listarProveedor();
+    listarCliente();
   };
 
   return (
     <div className="border-b border-gray-300 p-3 text-center">
-      <h1 className="text-2xl font-semibold mb-4">Proveedores</h1>
+      <h1 className="text-2xl font-semibold mb-4">Clientes</h1>
 
       <div className="mb-3">
         <Link
           className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-900"
           to="/registrar-proveedor"
         >
-          Registrar Proveedor
+          Registrar cliente
         </Link>
       </div>
 
       <div>
-        <h2 className="mb-2 font-bold">Proveedores registrados</h2>
+        <h2 className="mb-2 font-bold">Clientes registrados</h2>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-300">
             <thead className="bg-gray-100 border-b">
@@ -70,42 +70,42 @@ export default function Proveedores() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {proveedores.map((proveedor, indice) => (
+              {Clientes.map((cliente, indice) => (
                 <tr key={indice} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {proveedor.id_proveedor}
+                    {cliente.id_cliente}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {proveedor.nombre_proveedor}
+                    {cliente.nombre_cliente}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {proveedor.correo_electronico_proveedor}
+                    {cliente.correo_electronico_cliente}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <NumericFormat
-                      value={proveedor.cuit_proveedor}
+                      value={cliente.cuit_cliente}
                       displayType={"text"}
                     />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {proveedor.direccion_proveedor}
+                    {cliente.direccion_cliente}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {proveedor.razon_social_proveedor}
+                    {cliente.razon_social_cliente}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {proveedor.rubro}
+                    {cliente.rubro}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <NumericFormat
-                      value={proveedor.telefono_proveedor}
+                      value={cliente.telefono_cliente}
                       displayType={"text"}
                     />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-center">
                     <div>
                       <Link
-                        to={`/editar/${proveedor.id_proveedor}`}
+                        to={`/editar/${cliente.id_cliente}`}
                         className="text-indigo-600 hover:text-indigo-900 cursor-pointer"
                       >
                         Editar
@@ -113,7 +113,7 @@ export default function Proveedores() {
                       {/* Cambiado de botón a enlace para eliminar */}
                       <span
                         onClick={() =>
-                          eliminarProveedor(proveedor.id_proveedor)
+                          eliminarCliente(cliente.id_cliente)
                         }
                         className="text-indigo-600 hover:text-indigo-900 cursor-pointer"
                       >

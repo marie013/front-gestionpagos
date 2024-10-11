@@ -84,9 +84,11 @@ export default function UsersTable() {
   };
 
   return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 mt-16">
+
     <div className="bg-white shadow-md rounded-lg overflow-hidden">
       <div className="border-b border-gray-200 p-6">
-        <h1 className="text-2xl font-bold text-gray-900">Pagos</h1>
+        <h1 className="text-2xl font-bold text-gray-900 text-center">Pagos</h1>
       </div>
 
       <div className="overflow-x-auto">
@@ -172,5 +174,7 @@ export default function UsersTable() {
         </table>
       </div>
     </div>
+    </div>
+    
   );
 }
