@@ -31,7 +31,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-900"
             />
             <input
               type="number"
@@ -39,7 +39,7 @@ const Login = () => {
               value={cuit}
               onChange={(e) => setCuit(e.target.value)}
               required
-              className="w-full px-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-900"
             />
             <input
               type="password"
@@ -47,18 +47,18 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full px-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-900"
             />
-            <a href="#" className="block text-sm text-blue-600 hover:underline">¿Olvidaste tu contraseña?</a>
+            <a href="#" className="block text-sm text-blue-900 hover:underline">¿Olvidaste tu contraseña?</a>
             <button 
               type="submit"
-              className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300"
+              className="w-full bg-gray-800 text-white font-bold py-2 px-4 rounded-full hover:bg-gray-900 transition duration-300"
             >
               Iniciar Sesión
             </button>
           </form>
         </div>
-        <div className="w-1/2 bg-gradient-to-r from-blue-800 to-blue-900 text-white flex items-center justify-center">
+        <div className="w-1/2 bg-gradient-to-r from-gray-800 to-gray-900 text-white flex items-center justify-center">
           <div className="px-8 text-center">
             <h1 className="text-3xl font-bold mb-4">¡Bienvenido de nuevo!</h1>
             <p className="mb-6">Para mantenerte conectado con nosotros, inicia sesión con tu información personal</p>

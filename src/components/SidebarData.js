@@ -11,26 +11,26 @@ export const SidebarData= [
     },
     {
         title:'Registrar pago',
-        path:'/pagos',
+        path:'/registrarPago',
         icon: <IoIcons.IoIosPaper/>,
         cName: 'nav-text'
     },
     {
-        title:'Nuevo cliente',
-        path:'/proveedores',
-        icon: <IoIcons.IoMdPeople/>,
+        title:'Registrar cliente',
+        path:'/registrarCliente',
+        icon: <IoIcons.IoMdPersonAdd/>,
         cName: 'nav-text'
     },
     {
         title:'Clientes',
-        path:'/proveedores',
+        path:'/clientes',
         icon: <IoIcons.IoMdPeople/>,
         cName: 'nav-text'
     },
     {
         title:'Pagos',
-        path:'/comprobantes',
-        icon: <IoIcons.IoMdPeople/>,
+        path:'/pagos',
+        icon: <IoIcons.IoMdFiling/>,
         cName: 'nav-text'
     }
 
