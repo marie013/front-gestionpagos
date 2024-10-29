@@ -10,6 +10,7 @@ import RegistrarProveedor from './pages/RegistrarProveedor';
 import Proveedores from './pages/Proveedores';
 import Login from './components/Login';
 import Comprobantes from './pages/comprobantes';
+import Recibo from './components/recibo';
 
 function App() {
   const location = useLocation();
@@ -28,6 +29,8 @@ function App() {
           <Route path="/registrar-proveedor" element={<RegistrarCliente />} />
           <Route path="/pagos" element={<Comprobantes />} />
           <Route path="/proveedores" element={<Proveedores />} />
+          <Route path="/recibo" element={<Recibo />} />
+
 
         </Routes>
       </div>

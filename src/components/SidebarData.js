@@ -32,6 +32,12 @@ export const SidebarData= [
         path:'/pagos',
         icon: <IoIcons.IoMdFiling/>,
         cName: 'nav-text'
+    },
+    {
+        title:'Recibo',
+        path:'/recibo',
+        icon: <IoIcons.IoMdFiling/>,
+        cName: 'nav-text'
     }
 
 ]
