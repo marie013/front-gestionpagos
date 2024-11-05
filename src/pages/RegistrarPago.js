@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import React from 'react';
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
 
 export default function Pagos() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [formasPago, setFormasPago] = useState([{ tipo: "", monto: "", num_pago: "" }]);
   const [datosClientes, setDatosClientes] = useState({
