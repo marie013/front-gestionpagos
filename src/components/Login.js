@@ -1,21 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
+import { AutContext } from '../context/AutContext';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [cuit, setCuit] = useState('');
-  const [password, setPassword] = useState('');
+  const [correoElectronicoEntidad, setcorreoElectronicoEntidad] = useState('');
+  const [cuitEntidad, setCuitEntidad] = useState('');
+  const [contrasena, setContrasena] = useState('');
+  const { login } = useContext(AutContext); 
   const navigate = useNavigate();
 
-
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    if (email && cuit && password) {
-      // Here you would typically handle the login logic
-      navigate('/home');
 
-      // You can replace this with your actual login logic or navigation
+    if (!correoElectronicoEntidad || !cuitEntidad || !contrasena) {
+      alert('Por favor, complete todos los campos.');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:8082/gestion-de-pagos/iniciarSesion', {
+        correoElectronicoEntidad: correoElectronicoEntidad,
+        cuitEntidad: cuitEntidad,
+        contrasena: contrasena,
+      });
+
+      if (response.status === 200) {
+        console.log('Inicio de sesión exitoso', response.data);
+        login(); 
+        navigate('/home');
+      } else {
+        alert('Credenciales incorrectas o entidad no registrada.');
+      }
+    } catch (error) {
+      console.error('Error en el inicio de sesión:', error);
+      alert('Error al iniciar sesión. Intente nuevamente.');
     }
   };
 
@@ -28,29 +47,28 @@ const Login = () => {
             <input
               type="email"
               placeholder="Correo Electrónico"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={correoElectronicoEntidad}
+              onChange={(e) => setcorreoElectronicoEntidad(e.target.value)}
               required
               className="w-full px-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-900"
             />
             <input
               type="number"
               placeholder="CUIT"
-              value={cuit}
-              onChange={(e) => setCuit(e.target.value)}
+              value={cuitEntidad}
+              onChange={(e) => setCuitEntidad(e.target.value)}
               required
               className="w-full px-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-900"
             />
             <input
               type="password"
               placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={contrasena}
+              onChange={(e) => setContrasena(e.target.value)}
               required
               className="w-full px-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-900"
             />
-            <a href="#" className="block text-sm text-blue-900 hover:underline">¿Olvidaste tu contraseña?</a>
-            <button 
+            <button
               type="submit"
               className="w-full bg-gray-800 text-white font-bold py-2 px-4 rounded-full hover:bg-gray-900 transition duration-300"
             >
@@ -65,9 +83,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </div> 
-      
-
+    </div>
   );
 };
 

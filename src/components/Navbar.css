@@ -3,20 +3,23 @@
   font-size: 1.5rem; 
 }
 .navbar {
-    background-color: #060b26;
-    height: 80px;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    position: fixed;
-  }
-  .navbar-title {
-    color: #fff;
-    font-size: 24px;
-    margin: 0 auto;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+  background-color: #060b26;
+  height: 80px;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  position: fixed;
+  width: 100%; 
+  top: 0;
+  z-index: 1000; 
+  padding: 0 20px;
+}
+
+.navbar-title {
+  color: #fff;
+  font-size: 24px;
+  text-align: center;
+  flex-grow: 1; 
 }
   .menu-bars {
     margin-left: 2rem;

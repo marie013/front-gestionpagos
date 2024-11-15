@@ -75,7 +75,7 @@ export default function Clientes() {
                     {cliente.id_cliente}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {cliente.nombre_cliente}
+                    {cliente.nombreCliente}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {cliente.correo_electronico_cliente}

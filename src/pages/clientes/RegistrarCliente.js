@@ -22,7 +22,7 @@ export default function RegistrarCliente() {
         e.preventDefault();
         const urlBase= "http://localhost:8082/gestion-de-pagos/clientes";
         await axios.post(urlBase, cliente);
-        navegacion('/proveedores'); 
+        navegacion('/clientes'); 
     }
   return (
     <div className='container mx-auto p-4 pe-4'>

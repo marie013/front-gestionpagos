@@ -1,40 +1,44 @@
-import React from 'react';
-import './App.css';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import Pagos from './pages/Pagos';
+import RegistrarPago from './pages/RegistrarPago';
 import Clientes from './pages/clientes/Clientes';
 import RegistrarCliente from './pages/clientes/RegistrarCliente';
-import RegistrarProveedor from './pages/RegistrarProveedor';
 import Proveedores from './pages/Proveedores';
 import Login from './components/Login';
 import Comprobantes from './pages/comprobantes';
 import Recibo from './components/recibo';
+import { AutContext } from './context/AutContext';
+import EditarCliente from './pages/clientes/EditarCliente';
+import RegistrarFactura from './pages/RegistrarFactura';
 
 function App() {
-  const location = useLocation();
-  const isAuthenticated = location.pathname !== '/';
+  const { esAutenticado } = useContext(AutContext);
+
+  const ProtectedRoute = ({ children }) => {
+    return esAutenticado ? children : <Navigate to="/" />;
+  };
 
   return (
-    <div>
-      {isAuthenticated && <Navbar />}
-      <div className={isAuthenticated ? "main-content" : "login-container"} >
+    <Router>
+      {esAutenticado && <Navbar />}
+      <div className="main-content">
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/registrarPago" element={<Pagos />} />
-          <Route path="/clientes" element={<Clientes />} />
-          <Route path="/registrarCliente" element={<RegistrarCliente />} />
-          <Route path="/registrar-proveedor" element={<RegistrarCliente />} />
-          <Route path="/pagos" element={<Comprobantes />} />
-          <Route path="/proveedores" element={<Proveedores />} />
-          <Route path="/recibo" element={<Recibo />} />
-
-
+          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/registrarPago" element={<ProtectedRoute><RegistrarPago /></ProtectedRoute>} />
+          <Route path="/clientes" element={<><Clientes /></>} />
+          <Route path="/editar/:id" element={<ProtectedRoute><EditarCliente/></ProtectedRoute>} />
+          <Route path="/registrarCliente" element={<ProtectedRoute><RegistrarCliente /></ProtectedRoute>} />
+          <Route path="/registrar-proveedor" element={<ProtectedRoute><RegistrarCliente /></ProtectedRoute>} />
+          <Route path="/pagos" element={<ProtectedRoute><Comprobantes /></ProtectedRoute>} />
+          <Route path="/registrarFactura" element={<ProtectedRoute><RegistrarFactura/></ProtectedRoute>} />
+          <Route path="/proveedores" element={<ProtectedRoute><Proveedores /></ProtectedRoute>} />
+          <Route path="/recibo" element={<ProtectedRoute><Recibo /></ProtectedRoute>} />
         </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
