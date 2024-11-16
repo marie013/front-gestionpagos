@@ -1,133 +1,92 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { NumericFormat } from "react-number-format";
 import { Link } from "react-router-dom";
 
 export default function Clientes() {
   const urlBase = "http://localhost:8082/gestion-de-pagos/clientes";
-  const [Clientes, setCliente] = useState([]);
+  const [clientes, setClientes] = useState([]);
 
   useEffect(() => {
-    listarCliente();
+    listarClientes();
   }, []);
 
-  const listarCliente = async () => {
+  const listarClientes = async () => {
     const resultado = await axios.get(urlBase);
-    console.log("Resultado");
-    console.log(resultado.data);
-    setCliente(resultado.data);
+    console.log("Resultado", resultado.data);
+    setClientes(resultado.data);
   };
 
   const eliminarCliente = async (id) => {
     await axios.delete(`${urlBase}/${id}`);
-    listarCliente();
+    listarClientes();
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 mt-16">
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <h1 className="text-2xl font-semibold mb-4 text-center">Clientes</h1>
+      <div className="max-w-7xl mx-auto">
+        <header className="bg-white shadow-md rounded-lg mb-6">
+          <div className="flex items-center justify-between px-4 py-3">
+            <h1 className="text-2xl font-bold text-indigo-700">Clientes</h1>
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <input type="search" placeholder="Buscar..." className="pl-8 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 absolute left-2 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <Link to="/registrar-proveedor" className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out">
+                Registrar Cliente
+              </Link>
+            </div>
+          </div>
+        </header>
 
-      <div className="mb-3">
-        <Link className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-900"
-          to="/registrar-proveedor">
-          Registrar cliente
-        </Link>
-      </div>
-
-      <div>
-        <h2 className="mb-2 font-bold">Clientes registrados</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-300">
-            <thead className="bg-gray-100 border-b">
-              <tr>
-                <th className="px-6 py-3 text-sm font-medium text-gray-900">
-                  ID
-                </th>
-                <th className="px-6 py-3 text-sm font-medium text-gray-900">
-                  Nombre
-                </th>
-                <th className="px-6 py-3 text-sm font-medium text-gray-900">
-                  Correo
-                </th>
-                <th className="px-6 py-3 text-sm font-medium text-gray-900">
-                  CUIT
-                </th>
-                <th className="px-6 py-3 text-sm font-medium text-gray-900">
-                  Dirección
-                </th>
-                <th className="px-6 py-3 text-sm font-medium text-gray-900">
-                  Razón Social
-                </th>
-                <th className="px-6 py-3 text-sm font-medium text-gray-900">
-                  Rubro
-                </th>
-                <th className="px-6 py-3 text-sm font-medium text-gray-900">
-                  Teléfono
-                </th>
-                <th className="px-6 py-3 text-sm font-medium text-gray-900"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {Clientes.map((cliente, indice) => (
-                <tr key={indice} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {cliente.id_cliente}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {cliente.nombreCliente}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {cliente.correo_electronico_cliente}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <NumericFormat
-                      value={cliente.cuit_cliente}
-                      displayType={"text"}
-                    />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {cliente.direccion_cliente}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {cliente.razon_social_cliente}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {cliente.rubro}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <NumericFormat
-                      value={cliente.telefono_cliente}
-                      displayType={"text"}
-                    />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center">
-                    <div>
-                      <Link
-                        to={`/editar/${cliente.id_cliente}`}
-                        className="text-indigo-600 hover:text-indigo-900 cursor-pointer"
-                      >
-                        Editar
-                      </Link>
-                      {/* Cambiado de botón a enlace para eliminar */}
-                      <span
-                        onClick={() =>
-                          eliminarCliente(cliente.id_cliente)
-                        }
-                        className="text-indigo-600 hover:text-indigo-900 cursor-pointer"
-                      >
-                        Eliminar
-                      </span>
-                    </div>
-                  </td>
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-800">Clientes Registrados</h2>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CUIT</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dirección</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Razón Social</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rubro</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {clientes.map((cliente, indice) => (
+                  <tr key={indice} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{cliente.id_cliente}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cliente.nombreCliente}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cliente.correo_electronico_cliente}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <NumericFormat value={cliente.cuit_cliente} displayType={"text"} />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cliente.direccion_cliente}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cliente.razon_social_cliente}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cliente.rubro}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <NumericFormat value={cliente.telefono_cliente} displayType={"text"} />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <Link to={`/editar/${cliente.id_cliente}`} className="text-indigo-600 hover:text-indigo-900 mr-4">Editar</Link>
+                      <button onClick={() => eliminarCliente(cliente.id_cliente)} className="text-red-600 hover:text-red-900">Eliminar</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
-      </div>
-      
   );
 }
