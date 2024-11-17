@@ -6,7 +6,7 @@ export default function UsersTable() {
   const navigate = useNavigate();
   const [pagos, setPagos] = useState([]);
 
-  // Función para obtener los pagos del backend
+  // Obtener los pagos del backend
   useEffect(() => {
     axios
       .get("http://localhost:8082/gestion-de-pagos/pagos/pagos-realizados")
@@ -32,11 +32,24 @@ export default function UsersTable() {
     }
   };
 
+  // Función para formatear la fecha
+  const formatDate = (date) => {
+    const newDate = new Date(date);
+    return newDate.toLocaleDateString("es-AR", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 mt-16">
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         <div className="border-b border-gray-200 p-6">
-          <h1 className="text-2xl font-bold text-gray-900 text-center">Pagos</h1>
+          <h1 className="text-2xl font-bold text-gray-900 text-center">
+            Pagos
+          </h1>
         </div>
 
         <div className="overflow-x-auto">
@@ -53,25 +66,31 @@ export default function UsersTable() {
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Cliente
+                  Descripción
                 </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Correo
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Cuit
+                  Total
                 </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   Estado
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Cliente
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  CUIT
                 </th>
                 <th
                   scope="col"
@@ -85,27 +104,30 @@ export default function UsersTable() {
               {pagos.map((pago, index) => (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {pago.fecha_pago}
+                    {formatDate(pago.fecha_pago)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">
-                      {pago.nombreCliente}
+                      {pago.descripcion || "Sin descripción"}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {pago.correo_electronico_cliente} {/* Asegúrate de que esta sea la propiedad correcta */}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {pago.cuit_cliente} {/* Asegúrate de que esta sea la propiedad correcta */}
+                    ${pago.total || "0.00"}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(
-                        pago.estado_pago
+                        pago.estadoPago
                       )}`}
                     >
-                      {pago.estado_pago}
+                      {pago.estadoPago}
                     </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {pago.factura?.cliente?.nombreCliente}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {pago.factura?.cliente?.cuit_cliente}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button
