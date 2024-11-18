@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 export default function Clientes() {
   const urlBase = "http://localhost:8082/gestion-de-pagos/clientes";
   const [clientes, setClientes] = useState([]);
+  const [nombreCliente, setNombreCliente] = useState(""); // Estado para la búsqueda
 
   useEffect(() => {
     listarClientes();
@@ -13,8 +14,32 @@ export default function Clientes() {
 
   const listarClientes = async () => {
     const resultado = await axios.get(urlBase);
-    console.log("Resultado", resultado.data);
     setClientes(resultado.data);
+  };
+
+  const buscarClientePorNombre = async (nombre) => {
+    if (!nombre.trim()) {
+      listarClientes(); // Si el input está vacío, recarga la lista completa
+      return;
+    }
+
+    try {
+      const resultado = await axios.get(`http://localhost:8082/gestion-de-pagos/cliente/nombre/${nombre}`);
+      const clienteEncontrado = {
+        id_cliente: resultado.data, 
+        nombreCliente: nombre, 
+        correo_electronico_cliente: "",
+        cuit_cliente: "",
+        direccion_cliente: "",
+        razon_social_cliente: "",
+        rubro: "",
+        telefono_cliente: "",
+      };
+      setClientes([clienteEncontrado]); // Actualiza la lista con el cliente encontrado
+    } catch (error) {
+      console.error("Error al buscar cliente:", error);
+      setClientes([]); // Limpia la lista si no se encuentra el cliente
+    }
   };
 
   const eliminarCliente = async (id) => {
@@ -30,12 +55,33 @@ export default function Clientes() {
             <h1 className="text-2xl font-bold text-indigo-700">Clientes</h1>
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <input type="search" placeholder="Buscar..." className="pl-8 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400 absolute left-2 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                <input
+                  type="search"
+                  placeholder="Buscar por nombre..."
+                  value={nombreCliente}
+                  onChange={(e) => setNombreCliente(e.target.value)} // Actualiza el estado
+                  onKeyDown={(e) => e.key === "Enter" && buscarClientePorNombre(nombreCliente)} // Buscar al presionar Enter
+                  className="pl-8 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-gray-400 absolute left-2 top-1/2 transform -translate-y-1/2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
                 </svg>
               </div>
-              <Link to="/registrar-proveedor" className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out">
+              <Link
+                to="/registrar-proveedor"
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out"
+              >
                 Registrar Cliente
               </Link>
             </div>
@@ -68,7 +114,7 @@ export default function Clientes() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cliente.nombreCliente}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cliente.correo_electronico_cliente}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <NumericFormat value={cliente.cuit_cliente} displayType={"text"} />
+                      <NumericFormat value={cliente.cuitCliente} displayType={"text"} />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cliente.direccion_cliente}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cliente.razon_social_cliente}</td>

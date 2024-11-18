@@ -12,6 +12,7 @@ import Recibo from './components/recibo';
 import { AutContext } from './context/AutContext';
 import EditarCliente from './pages/clientes/EditarCliente';
 import RegistrarFactura from './pages/RegistrarFactura';
+import Entidad from './pages/Entidad';
 
 function App() {
   const { esAutenticado } = useContext(AutContext);
@@ -27,6 +28,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/entidad" element={<ProtectedRoute><Entidad /></ProtectedRoute>} />
           <Route path="/registrarPago" element={<ProtectedRoute><RegistrarPago /></ProtectedRoute>} />
           <Route path="/clientes" element={<><Clientes /></>} />
           <Route path="/editar/:id" element={<ProtectedRoute><EditarCliente/></ProtectedRoute>} />

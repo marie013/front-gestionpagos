@@ -9,7 +9,7 @@ export default function RegistrarCliente() {
   const navigate = useNavigate();
 
   const [cliente, setCliente] = useState({
-    nombre_cliente: "",
+    nombreCliente: "",
     rubro: "",
     cuit_cliente: "",
     direccion_cliente: "",
@@ -18,7 +18,7 @@ export default function RegistrarCliente() {
     correo_electronico_cliente: ""
   });
 
-  const { nombre_cliente, rubro, cuit_cliente, direccion_cliente, telefono_cliente, razon_social_cliente, correo_electronico_cliente } = cliente;
+  const { nombreCliente, rubro, cuit_cliente, direccion_cliente, telefono_cliente, razon_social_cliente, correo_electronico_cliente } = cliente;
 
   const onInputChange = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
@@ -41,12 +41,12 @@ export default function RegistrarCliente() {
         <p className="text-lg text-gray-600 mb-6">Complete el formulario para registrar un nuevo cliente.</p>
         <form onSubmit={onSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label htmlFor="nombre_cliente" className="block text-sm font-medium text-gray-700">Nombre</label>
+            <label htmlFor="nombreCliente" className="block text-sm font-medium text-gray-700">Nombre</label>
             <input
               type="text"
-              id="nombre_cliente"
-              name="nombre_cliente"
-              value={nombre_cliente}
+              id="nombreCliente"
+              name="nombreCliente"
+              value={nombreCliente}
               onChange={onInputChange}
               required
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
