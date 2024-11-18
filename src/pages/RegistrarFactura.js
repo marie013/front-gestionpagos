@@ -5,13 +5,14 @@ import { useNavigate } from 'react-router-dom';
 export default function RegistrarFactura() {
     let navigate = useNavigate();
     const [factura, setFactura] = useState({
-        montoFactura: "",
-        fechaFactura: "",
+        monto_factura: "",
+        fecha_factura: "",
         numeroFactura: "",
-        cliente: "",
-        entidad: ""
+        nombreCliente: "",
+        nombreEntidad: ""
     });
-    const { montoFactura, fechaFactura, numeroFactura, cliente, entidad } = factura;
+
+    const { monto_factura, fecha_factura, numeroFactura, nombreCliente, nombreEntidad } = factura;
 
     const onInputChange = (e) => {
         setFactura({ ...factura, [e.target.name]: e.target.value });
@@ -19,9 +20,22 @@ export default function RegistrarFactura() {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        const urlBase = "http://localhost:8082/gestion-de-pagos/facturas";
-        await axios.post(urlBase, factura);
-        navigate('/facturas');
+
+        try {
+            const facturaData = {
+                monto_factura: factura.monto_factura,
+                fecha_factura: factura.fecha_factura,
+                numeroFactura: factura.numeroFactura,
+                nombreCliente: factura.nombreCliente,
+                nombreEntidad: factura.nombreEntidad
+            };
+
+            const urlBase = "http://localhost:8082/gestion-de-pagos/generarFactura";
+            await axios.post(urlBase, facturaData);
+            navigate('/facturas');
+        } catch (error) {
+            console.error("Error al registrar factura:", error);
+        }
     };
 
     return (
@@ -31,27 +45,27 @@ export default function RegistrarFactura() {
             </div>
             <form onSubmit={onSubmit} className='max-w-4xl mx-auto space-y-8 p-6 bg-white shadow-lg rounded-xl'>
                 <div className="mb-4">
-                    <label htmlFor="montoFactura" className="block text-sm font-medium text-gray-700">Monto</label>
+                    <label htmlFor="monto_factura" className="block text-sm font-medium text-gray-700">Monto</label>
                     <input
                         type="number"
                         step="any"
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        id="montoFactura"
-                        name="montoFactura"
+                        id="monto_factura"
+                        name="monto_factura"
                         required
-                        value={montoFactura}
+                        value={monto_factura}
                         onChange={onInputChange}
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="fechaFactura" className="block text-sm font-medium text-gray-700">Fecha (yyyy-mm-dd)</label>
+                    <label htmlFor="fecha_factura" className="block text-sm font-medium text-gray-700">Fecha (yyyy-mm-dd)</label>
                     <input
                         type="date"
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        id="fechaFactura"
-                        name="fechaFactura"
+                        id="fecha_factura"
+                        name="fecha_factura"
                         required
-                        value={fechaFactura}
+                        value={fecha_factura}
                         onChange={onInputChange}
                     />
                 </div>
@@ -68,26 +82,26 @@ export default function RegistrarFactura() {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="cliente" className="block text-sm font-medium text-gray-700">ID del Cliente</label>
+                    <label htmlFor="nombreCliente" className="block text-sm font-medium text-gray-700">Nombre del Cliente</label>
                     <input
-                        type="number"
+                        type="text"
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        id="cliente"
-                        name="cliente"
+                        id="nombreCliente"
+                        name="nombreCliente"
                         required
-                        value={cliente}
+                        value={nombreCliente}
                         onChange={onInputChange}
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="entidad" className="block text-sm font-medium text-gray-700">ID de la Entidad</label>
+                    <label htmlFor="nombreEntidad" className="block text-sm font-medium text-gray-700">Nombre de la Entidad</label>
                     <input
-                        type="number"
+                        type="text"
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        id="entidad"
-                        name="entidad"
+                        id="nombreEntidad"
+                        name="nombreEntidad"
                         required
-                        value={entidad}
+                        value={nombreEntidad}
                         onChange={onInputChange}
                     />
                 </div>
