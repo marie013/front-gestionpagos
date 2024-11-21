@@ -7,7 +7,7 @@ const Login = () => {
   const [correoElectronicoEntidad, setcorreoElectronicoEntidad] = useState('');
   const [cuitEntidad, setCuitEntidad] = useState('');
   const [contrasena, setContrasena] = useState('');
-  const { login } = useContext(AutContext); 
+  const { login } = useContext(AutContext);
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
@@ -27,7 +27,22 @@ const Login = () => {
 
       if (response.status === 200) {
         console.log('Inicio de sesión exitoso', response.data);
-        login(); 
+        const entidad = response.data;
+        console.log("Datos de la entidad:", entidad);
+        const telefono = response.data.entidad.telefono_entidad || "No disponible";
+        const razonSocial = response.data.entidad.razon_social_entidad || "No disponible";
+        const direccion = response.data.entidad.direccion_entidad || "No disponible";
+        const nombre = response.data.entidad.nombreEntidad || "No disponible";
+
+        // Guarda datos en cookies
+        document.cookie = `telefonoEntidad=${telefono}; max-age=3600; path=/; secure; samesite=strict`;
+        document.cookie = `direccionEntidad=${direccion}; max-age=3600; path=/; secure; samesite=strict`;
+        document.cookie = `razonSocialEntidad=${razonSocial}; max-age=3600; path=/; secure; samesite=strict`;
+        document.cookie = `nombreEntidad=${nombre}; max-age=3600; path=/; secure; samesite=strict`;
+        document.cookie = `correoElectronicoEntidad=${correoElectronicoEntidad}; max-age=3600; path=/; secure; samesite=strict`;
+        document.cookie = `cuitEntidad=${cuitEntidad}; max-age=3600; path=/; secure; samesite=strict`;
+
+        login();
         navigate('/home');
       } else {
         alert('Credenciales incorrectas o entidad no registrada.');
