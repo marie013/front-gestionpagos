@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { obtenerCookie } from '../components/cookies'; 
 
 export default function RegistrarFactura() {
     let navigate = useNavigate();
@@ -8,11 +9,20 @@ export default function RegistrarFactura() {
         monto_factura: "",
         fecha_factura: "",
         numeroFactura: "",
-        nombreCliente: "",
-        nombreEntidad: ""
+        cuitCliente: "",
+        cuitEntidad: ""
     });
+    //obtenemos el cuitEntidad de la cookie
+    useEffect(() => {
+        const cuitEntidad = obtenerCookie("cuitEntidad");
+        console.log("cuit guardado en la cookie:", cuitEntidad);
+        setFactura(prevState => ({
+            ...prevState,
+            cuitEntidad: cuitEntidad 
+        }));
+    }, []);
 
-    const { monto_factura, fecha_factura, numeroFactura, nombreCliente, nombreEntidad } = factura;
+    const { monto_factura, fecha_factura, numeroFactura, cuitCliente, cuitEntidad } = factura;
 
     const onInputChange = (e) => {
         setFactura({ ...factura, [e.target.name]: e.target.value });
@@ -26,8 +36,8 @@ export default function RegistrarFactura() {
                 monto_factura: factura.monto_factura,
                 fecha_factura: factura.fecha_factura,
                 numeroFactura: factura.numeroFactura,
-                nombreCliente: factura.nombreCliente,
-                nombreEntidad: factura.nombreEntidad
+                cuitCliente: factura.cuitCliente,
+                cuitEntidad: factura.cuitEntidad
             };
 
             const urlBase = "http://localhost:8082/gestion-de-pagos/generarFactura";
@@ -82,26 +92,14 @@ export default function RegistrarFactura() {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="nombreCliente" className="block text-sm font-medium text-gray-700">Nombre del Cliente</label>
+                    <label htmlFor="cuitCliente" className="block text-sm font-medium text-gray-700">Cuit del Cliente</label>
                     <input
-                        type="text"
+                        type="number"
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        id="nombreCliente"
-                        name="nombreCliente"
+                        id="cuitCliente"
+                        name="cuitCliente"
                         required
-                        value={nombreCliente}
-                        onChange={onInputChange}
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="nombreEntidad" className="block text-sm font-medium text-gray-700">Nombre de la Entidad</label>
-                    <input
-                        type="text"
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        id="nombreEntidad"
-                        name="nombreEntidad"
-                        required
-                        value={nombreEntidad}
+                        value={cuitCliente}
                         onChange={onInputChange}
                     />
                 </div>
