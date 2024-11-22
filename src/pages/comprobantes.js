@@ -127,7 +127,7 @@ export default function UsersTable() {
                     {pago.factura?.cliente?.nombreCliente}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {pago.factura?.cliente?.cuit_cliente}
+                    {pago.factura?.cliente?.cuitCliente}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button
