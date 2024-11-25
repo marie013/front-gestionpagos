@@ -146,6 +146,7 @@ export default function Pagos() {
       return;
     }
 
+
     const pagoData = {
       numeroPago: datosFactura.numFactura,
       fecha_pago: new Date(fecha_pago).toISOString().split("T")[0], // Formato ISO: YYYY-MM-DD
@@ -180,7 +181,7 @@ export default function Pagos() {
 
       if (response.status === 200 || response.status === 201) {
         alert("Pago registrado exitosamente");
-        navigate("/");
+        navigate("/RegistrarPago");
       }
     } catch (error) {
       console.error("Error al realizar el pago:", error);
@@ -191,32 +192,175 @@ export default function Pagos() {
     } finally {
       setLoading(false);
     }
-    generarReciboPDF();
+    generarReciboPDF(pagoData);
+
   };
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   generarReciboPDF();
+ 
+
+  // const generarReciboPDF = () => {
+  //   const doc = new jsPDF();
+
+  //   // Configuración inicial
+  //   doc.setFont("helvetica", "bold");
+
+  //   // Agregar logo o encabezado
+  //   doc.setFontSize(20);
+  //   doc.text("Distribuidora Carlos SA", 105, 20, { align: "center" });
+
+  //   // Información de la empresa
+  //   doc.setFontSize(10);
+  //   doc.text("CUIT: 26-17142180-0", 105, 30, { align: "center" });
+  //   doc.text("Calle Retama Mc-c3, Villa Tulumaya", 105, 35, {
+  //     align: "center",
+  //   });
+  //   doc.text("Lavalle, Mendoza", 105, 40, { align: "center" });
+
+  //   // Línea divisoria
+  //   doc.setLineWidth(0.5);
+  //   doc.line(20, 45, 190, 45);
+
+  //   // Título del recibo
+  //   doc.setFontSize(16);
+  //   doc.text("RECIBO DE PAGO", 105, 55, { align: "center" });
+
+  //   // Número de recibo y fecha
+  //   doc.setFontSize(10);
+  //   doc.text(`N° de Recibo: ${datosFactura.numFactura}`, 20, 65);
+  //   doc.text(`Fecha de Pago: ${fecha_pago}`, 20, 70);  // fecha_pago es el estado
+
+  //   // Marco decorativo
+  //   doc.rect(15, 15, 180, 55);
+
+  //   // Información del cliente en formato de tabla
+  //   doc.setFontSize(11);
+  //   doc.text("Datos del Cliente", 20, 80);
+
+  //   const clienteData = [
+  //     [
+  //       { content: "Cliente:", styles: { fontStyle: "bold" } },
+  //       datosFactura.cliente.nombreCliente,
+  //       { content: "CUIT:", styles: { fontStyle: "bold" } },
+  //       datosFactura.cliente.cuitCliente,
+  //     ],
+  //     // [
+  //     //   { content: "Dirección:", styles: { fontStyle: "bold" } },
+  //     //   datosFactura.cliente.telefono_cliente,
+  //     //   { content: "Teléfono:", styles: { fontStyle: "bold" } },
+  //     //   datosFactura.telefono,
+  //     // ],
+  //     [
+  //       { content: "Email:", styles: { fontStyle: "bold" } },
+  //       datosFactura.cliente.correo_electronico_cliente,
+  //       { content: "Factura N°:", styles: { fontStyle: "bold" } },
+  //       datosFactura.numFactura,
+  //     ],
+  //   ];
+
+  //   doc.autoTable({
+  //     startY: 85,
+  //     head: [],
+  //     body: clienteData,
+  //     theme: "plain",
+  //     styles: {
+  //       fontSize: 10,
+  //       cellPadding: 5,
+  //     },
+  //     columnStyles: {
+  //       0: { cellWidth: 30 },
+  //       1: { cellWidth: 50 }, // Reducir el tamaño si es necesario
+  //       2: { cellWidth: 30 },
+  //       3: { cellWidth: 50 }, // Reducir el tamaño si es necesario
+  //     },
+  //     autoWidth: true, // Esto ajustará automáticamente el tamaño de las columnas
+
+  //   });
+    
+
+  //   // Tabla de formas de pago
+  //   doc.setFontSize(11);
+  //   doc.text("Detalle de Pagos", 20, doc.autoTable.previous.finalY + 15);
+
+  //   const formasPagoData = formas_de_pago.map((pago) => [
+  //     pago.tipo,
+  //     `$ ${Number(pago.monto).toLocaleString("es-AR")}`,
+  //     pago.num_pago,
+  //   ]);
+
+  //   doc.autoTable({
+  //     startY: doc.autoTable.previous.finalY + 20,
+  //     head: [["Forma de Pago", "Monto", "N° de Operación"]],
+  //     body: formasPagoData,
+  //     theme: "striped",
+  //     headStyles: {
+  //       fillColor: [71, 85, 105],
+  //       textColor: 255,
+  //       fontSize: 10,
+  //     },
+  //     styles: {
+  //       fontSize: 9,
+  //       cellPadding: 5,
+  //     },
+  //     columnStyles: {
+  //       0: { cellWidth: 60 },
+  //       1: { cellWidth: 60 },
+  //       2: { cellWidth: 60 },
+  //     },
+  //   });
+
+  //   // Descripción
+  //   if (descripcion) {
+  //     doc.setFontSize(10);
+  //     doc.text("Descripción:", 20, doc.autoTable.previous.finalY + 15);
+  //     doc.setFont("helvetica", "normal");
+  //     doc.text(descripcion, 20, doc.autoTable.previous.finalY + 22);
+  //   }
+
+  //   // Total y estado
+  //   doc.setFont("helvetica", "bold");
+  //   doc.setFontSize(12);
+  //   doc.text(
+  //     `Total: $ ${Number(total).toLocaleString("es-AR")}`,
+  //     150,
+  //     doc.autoTable.previous.finalY + 30,
+  //     { align: "right" }
+  //   );
+  //   doc.setFontSize(10);
+  //   doc.text(`Estado: ${estadoPago}`, 150, doc.autoTable.previous.finalY + 37, {
+  //     align: "right",
+  //   });
+
+  //   // Línea de firma
+  //   const firmaY = doc.autoTable.previous.finalY + 60;
+  //   doc.line(20, firmaY, 80, firmaY);
+  //   doc.setFontSize(9);
+  //   doc.text("Firma y Aclaración", 50, firmaY + 5, { align: "center" });
+
+  //   // Pie de página
+  //   doc.setFontSize(8);
+  //   doc.setFont("helvetica", "normal");
+  //   doc.text("Documento generado electrónicamente", 105, 280, {
+  //     align: "center",
+  //   });
+
+  //   // Descargar PDF
+  //   doc.save(`recibo_${datosFactura.numFactura}.pdf`);
+  //   const pdfBase64 = doc.output("datauristring");
+  
+  //   // Llamar a la función para enviar el PDF al backend
+  //   enviarPDFAlBackend(pdfBase64);
   // };
 
-  const generarReciboPDF = () => {
+  const generarReciboPDF = (pagoData) => {
     const doc = new jsPDF();
 
-    // Configuración inicial
+    // Encabezado del recibo
     doc.setFont("helvetica", "bold");
-
-    // Agregar logo o encabezado
     doc.setFontSize(20);
     doc.text("Distribuidora Carlos SA", 105, 20, { align: "center" });
-
-    // Información de la empresa
     doc.setFontSize(10);
     doc.text("CUIT: 26-17142180-0", 105, 30, { align: "center" });
-    doc.text("Calle Retama Mc-c3, Villa Tulumaya", 105, 35, {
-      align: "center",
-    });
+    doc.text("Calle Retama Mc-c3, Villa Tulumaya", 105, 35, { align: "center" });
     doc.text("Lavalle, Mendoza", 105, 40, { align: "center" });
-
-    // Línea divisoria
     doc.setLineWidth(0.5);
     doc.line(20, 45, 190, 45);
 
@@ -224,110 +368,60 @@ export default function Pagos() {
     doc.setFontSize(16);
     doc.text("RECIBO DE PAGO", 105, 55, { align: "center" });
 
-    // Número de recibo y fecha
+    // Información del recibo
     doc.setFontSize(10);
-    doc.text(`N° de Recibo: ${datosFactura.numFactura}`, 20, 65);
-    doc.text(`Fecha de Pago: ${fecha_pago}`, 20, 70);  // fecha_pago es el estado
+    doc.text(`N° de Recibo: ${pagoData.numeroPago || "No asignado"}`, 20, 65);
+    doc.text(`Fecha de Pago: ${pagoData.fecha_pago}`, 20, 70);
 
-    // Marco decorativo
-    doc.rect(15, 15, 180, 55);
-
-    // Información del cliente en formato de tabla
-    doc.setFontSize(11);
-    doc.text("Datos del Cliente", 20, 80);
-
+    // Datos del cliente
     const clienteData = [
-      [
-        { content: "Cliente:", styles: { fontStyle: "bold" } },
-        datosFactura.cliente.nombreCliente,
-        { content: "CUIT:", styles: { fontStyle: "bold" } },
-        datosFactura.cliente.cuitCliente,
-      ],
-      // [
-      //   { content: "Dirección:", styles: { fontStyle: "bold" } },
-      //   datosFactura.cliente.telefono_cliente,
-      //   { content: "Teléfono:", styles: { fontStyle: "bold" } },
-      //   datosFactura.telefono,
-      // ],
-      [
-        { content: "Email:", styles: { fontStyle: "bold" } },
-        datosFactura.cliente.correo_electronico_cliente,
-        { content: "Factura N°:", styles: { fontStyle: "bold" } },
-        datosFactura.numFactura,
-      ],
+        [
+            { content: "Cliente:", styles: { fontStyle: "bold" } },
+            pagoData.factura.cliente.nombreCliente,
+            { content: "CUIT:", styles: { fontStyle: "bold" } },
+            pagoData.factura.cliente.cuitCliente,
+        ],
+        [
+            { content: "Email:", styles: { fontStyle: "bold" } },
+            pagoData.factura.cliente.correo_electronico_cliente,
+            { content: "Factura N°:", styles: { fontStyle: "bold" } },
+            pagoData.factura.numeroFactura,
+        ],
     ];
 
     doc.autoTable({
-      startY: 85,
-      head: [],
-      body: clienteData,
-      theme: "plain",
-      styles: {
-        fontSize: 10,
-        cellPadding: 5,
-      },
-      columnStyles: {
-        0: { cellWidth: 30 },
-        1: { cellWidth: 60 },
-        2: { cellWidth: 30 },
-        3: { cellWidth: 60 },
-      },
+        startY: 85,
+        head: [],
+        body: clienteData,
+        theme: "plain",
+        styles: {
+            fontSize: 10,
+            cellPadding: 5,
+        },
     });
 
-    // Tabla de formas de pago
-    doc.setFontSize(11);
-    doc.text("Detalle de Pagos", 20, doc.autoTable.previous.finalY + 15);
-
-    const formasPagoData = formas_de_pago.map((pago) => [
-      pago.tipo,
-      `$ ${Number(pago.monto).toLocaleString("es-AR")}`,
-      pago.num_pago,
+    // Detalle de pagos
+    const formasPagoData = pagoData.formas_de_pago.map((pago) => [
+        pago.metodo,
+        `$ ${Number(pago.monto).toLocaleString("es-AR")}`,
+        pago.nro_operacion,
     ]);
 
     doc.autoTable({
-      startY: doc.autoTable.previous.finalY + 20,
-      head: [["Forma de Pago", "Monto", "N° de Operación"]],
-      body: formasPagoData,
-      theme: "striped",
-      headStyles: {
-        fillColor: [71, 85, 105],
-        textColor: 255,
-        fontSize: 10,
-      },
-      styles: {
-        fontSize: 9,
-        cellPadding: 5,
-      },
-      columnStyles: {
-        0: { cellWidth: 60 },
-        1: { cellWidth: 60 },
-        2: { cellWidth: 60 },
-      },
+        startY: doc.autoTable.previous.finalY + 20,
+        head: [["Forma de Pago", "Monto", "N° de Operación"]],
+        body: formasPagoData,
+        theme: "striped",
     });
 
-    // Descripción
-    if (descripcion) {
-      doc.setFontSize(10);
-      doc.text("Descripción:", 20, doc.autoTable.previous.finalY + 15);
-      doc.setFont("helvetica", "normal");
-      doc.text(descripcion, 20, doc.autoTable.previous.finalY + 22);
-    }
-
-    // Total y estado
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(12);
+    // Total
+    doc.text("Total a Pagar: ", 20, doc.autoTable.previous.finalY + 10);
     doc.text(
-      `Total: $ ${Number(total).toLocaleString("es-AR")}`,
-      150,
-      doc.autoTable.previous.finalY + 30,
-      { align: "right" }
+        "$ " + pagoData.total.toLocaleString("es-AR"),
+        80,
+        doc.autoTable.previous.finalY + 10
     );
-    doc.setFontSize(10);
-    doc.text(`Estado: ${estadoPago}`, 150, doc.autoTable.previous.finalY + 37, {
-      align: "right",
-    });
-
-    // Línea de firma
+   
     const firmaY = doc.autoTable.previous.finalY + 60;
     doc.line(20, firmaY, 80, firmaY);
     doc.setFontSize(9);
@@ -340,10 +434,16 @@ export default function Pagos() {
       align: "center",
     });
 
-    // Descargar PDF
-    doc.save(`recibo_${datosFactura.numFactura}.pdf`);
-  };
+    // Generar el PDF como base64 y guardar en localStorage
+    const pdfBase64 = doc.output("datauristring");
+    const clave = `recibo_${pagoData.numeroPago}`; // Usamos el número de recibo como clave
+    localStorage.setItem(clave, pdfBase64);
 
+    alert(`Recibo para la factura N° ${pagoData.numeroPago} guardado en localStorage.`);
+};
+
+  
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 mt-16">
       <div className="text-center mb-6">
