@@ -31,6 +31,26 @@ export default function Pagos() {
   const [estadoPago, setEstadoPago] = useState("");
   const [loading, setLoading] = useState(false);
 
+
+  const [entidad, setEntidad] = useState(null) 
+  const [error, setError] = useState(null) 
+
+  useEffect(() => {
+    const fetchEntidad = async () => {
+      try {
+        const response = await axios.get('http://localhost:8082/gestion-de-pagos/entidad') 
+        const data = response.data[0] 
+        setEntidad(data)
+      } catch (err) {
+        setError('Error al cargar los datos de la entidad.')
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchEntidad()
+  }, [])
   const buscarFacturaPorNumero = async (numeroFactura) => {
     if (!numeroFactura) return;
 
@@ -309,14 +329,23 @@ export default function Pagos() {
           className="max-w-4xl mx-auto space-y-8 p-6 bg-white shadow-lg rounded-xl"
         >
           <div className="border-b border-gray-200 pb-6">
-            {/* <h1 className="text-3xl font-bold text-gray-900 mb-6">Datos de la Factura</h1> */}
+            {/* <h1 className="text-3xl font-bold text-gray-900 mb-6">Datos de la Factura</h1>
             <h1 className="text-3xl font-bold text-gray-800">
               Distribuidora Carlos SA
             </h1>
             <p className="text-gray-600">CUIT: 26-17142180-0</p>
             <p className="text-gray-600">
               Calle Retama Mc-c3, Villa Tulumaya, Lavalle, Mendoza
-            </p>
+            </p> */}
+               <div className="space-y-2 flex flex-col ">
+              <p><Building2 className="inline mr-2" />{entidad.nombreEntidad}</p>
+              <p>CUIT: {entidad.cuitEntidad}</p>
+              <p><Mail className="inline mr-2" />{entidad.correoElectronicoEntidad}</p>
+              <p><Phone className="inline mr-2" />{entidad.telefono_entidad}</p>
+              <p>Razón Social: {entidad.razon_social_entidad}</p>
+              <p><MapPin className="inline mr-2" />{entidad.direccion_entidad}</p>
+            
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <InputField

@@ -43,8 +43,8 @@ export default function Comprobantes() {
     };
 
     // Función para ver el comprobante en el frontend
-    const verComprobante = (numeroFactura) => {
-        const pdfBase64 = localStorage.getItem(`recibo_${numeroFactura}`);
+    const verComprobante = (numeroPago) => {
+        const pdfBase64 = localStorage.getItem(`recibo_${numeroPago}`);
         if (pdfBase64) {
             const newWindow = window.open();
             newWindow.document.write(`
@@ -108,7 +108,7 @@ export default function Comprobantes() {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.factura?.cliente?.cuitCliente}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <button
-                                            onClick={() => verComprobante(pago.factura.numeroFactura)}
+                                            onClick={() => verComprobante(pago.numeroPago)}
                                             className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline border-none rounded-none"
                                         >
                                             Ver
