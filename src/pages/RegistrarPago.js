@@ -7,14 +7,15 @@ import "jspdf-autotable";
 
 export default function Pagos() {
   const navigate = useNavigate();
-  const [fecha_pago, setFechaPago] = useState(""); // Add this line
-
+  const [fecha_pago, setFechaPago] = useState("");
+  const [numeroPago, setNumeroPago] = useState("");//
   const [formas_de_pago, setformas_de_pago] = useState([
     { tipo: "", monto: "", num_pago: "" },
   ]);
   const [datosFactura, setDatosFactura] = useState({
     numFactura: "",
     monto_factura: "",
+    deuda: "",
     fecha_factura: "",
     cliente: {
       nombreCliente: "",
@@ -44,6 +45,7 @@ export default function Pagos() {
           numFactura: factura.numeroFactura,
           monto_factura: factura.monto_factura,
           fecha_factura: factura.fecha_factura,
+          deuda: factura.deuda,
           cliente: {
             nombreCliente: factura.cliente.nombreCliente,
             cuitCliente: factura.cliente.cuitCliente,
@@ -62,6 +64,8 @@ export default function Pagos() {
         numFactura: numeroFactura,
         monto_factura: "",
         fecha_factura: "",
+        // se agrega deuda
+        deuda: "",
         cliente: {
           nombreCliente: "",
           cuitCliente: "",
@@ -118,8 +122,12 @@ export default function Pagos() {
       return false;
     }
 
-    if (!estadoPago) {
-      alert("Por favor, seleccione un estado de pago");
+    // if (!estadoPago) {
+    //   alert("Por favor, seleccione un estado de pago");
+    //   return false;
+    // }
+    if (!numeroPago) {
+      alert("Por favor, ingrese el número de pago");
       return false;
     }
 
@@ -148,11 +156,13 @@ export default function Pagos() {
 
 
     const pagoData = {
-      numeroPago: datosFactura.numFactura,
+      //se habia puesto:numeroPago: datosFactura.numFactura,
+      numeroPago,
       fecha_pago: new Date(fecha_pago).toISOString().split("T")[0], // Formato ISO: YYYY-MM-DD
       descripcion: descripcion,
       estadoPago: estadoPago,
       total: total,
+      deuda: datosFactura.deuda,
       factura: {
         id_factura: datosFactura.numFactura,
         monto_factura: datosFactura.monto_factura,
@@ -187,7 +197,7 @@ export default function Pagos() {
       console.error("Error al realizar el pago:", error);
       alert(
         "Error al realizar el pago: " +
-          (error.response?.data?.message || error.message)
+        (error.response?.data?.message || error.message)
       );
     } finally {
       setLoading(false);
@@ -195,160 +205,7 @@ export default function Pagos() {
     generarReciboPDF(pagoData);
 
   };
- 
 
-  // const generarReciboPDF = () => {
-  //   const doc = new jsPDF();
-
-  //   // Configuración inicial
-  //   doc.setFont("helvetica", "bold");
-
-  //   // Agregar logo o encabezado
-  //   doc.setFontSize(20);
-  //   doc.text("Distribuidora Carlos SA", 105, 20, { align: "center" });
-
-  //   // Información de la empresa
-  //   doc.setFontSize(10);
-  //   doc.text("CUIT: 26-17142180-0", 105, 30, { align: "center" });
-  //   doc.text("Calle Retama Mc-c3, Villa Tulumaya", 105, 35, {
-  //     align: "center",
-  //   });
-  //   doc.text("Lavalle, Mendoza", 105, 40, { align: "center" });
-
-  //   // Línea divisoria
-  //   doc.setLineWidth(0.5);
-  //   doc.line(20, 45, 190, 45);
-
-  //   // Título del recibo
-  //   doc.setFontSize(16);
-  //   doc.text("RECIBO DE PAGO", 105, 55, { align: "center" });
-
-  //   // Número de recibo y fecha
-  //   doc.setFontSize(10);
-  //   doc.text(`N° de Recibo: ${datosFactura.numFactura}`, 20, 65);
-  //   doc.text(`Fecha de Pago: ${fecha_pago}`, 20, 70);  // fecha_pago es el estado
-
-  //   // Marco decorativo
-  //   doc.rect(15, 15, 180, 55);
-
-  //   // Información del cliente en formato de tabla
-  //   doc.setFontSize(11);
-  //   doc.text("Datos del Cliente", 20, 80);
-
-  //   const clienteData = [
-  //     [
-  //       { content: "Cliente:", styles: { fontStyle: "bold" } },
-  //       datosFactura.cliente.nombreCliente,
-  //       { content: "CUIT:", styles: { fontStyle: "bold" } },
-  //       datosFactura.cliente.cuitCliente,
-  //     ],
-  //     // [
-  //     //   { content: "Dirección:", styles: { fontStyle: "bold" } },
-  //     //   datosFactura.cliente.telefono_cliente,
-  //     //   { content: "Teléfono:", styles: { fontStyle: "bold" } },
-  //     //   datosFactura.telefono,
-  //     // ],
-  //     [
-  //       { content: "Email:", styles: { fontStyle: "bold" } },
-  //       datosFactura.cliente.correo_electronico_cliente,
-  //       { content: "Factura N°:", styles: { fontStyle: "bold" } },
-  //       datosFactura.numFactura,
-  //     ],
-  //   ];
-
-  //   doc.autoTable({
-  //     startY: 85,
-  //     head: [],
-  //     body: clienteData,
-  //     theme: "plain",
-  //     styles: {
-  //       fontSize: 10,
-  //       cellPadding: 5,
-  //     },
-  //     columnStyles: {
-  //       0: { cellWidth: 30 },
-  //       1: { cellWidth: 50 }, // Reducir el tamaño si es necesario
-  //       2: { cellWidth: 30 },
-  //       3: { cellWidth: 50 }, // Reducir el tamaño si es necesario
-  //     },
-  //     autoWidth: true, // Esto ajustará automáticamente el tamaño de las columnas
-
-  //   });
-    
-
-  //   // Tabla de formas de pago
-  //   doc.setFontSize(11);
-  //   doc.text("Detalle de Pagos", 20, doc.autoTable.previous.finalY + 15);
-
-  //   const formasPagoData = formas_de_pago.map((pago) => [
-  //     pago.tipo,
-  //     `$ ${Number(pago.monto).toLocaleString("es-AR")}`,
-  //     pago.num_pago,
-  //   ]);
-
-  //   doc.autoTable({
-  //     startY: doc.autoTable.previous.finalY + 20,
-  //     head: [["Forma de Pago", "Monto", "N° de Operación"]],
-  //     body: formasPagoData,
-  //     theme: "striped",
-  //     headStyles: {
-  //       fillColor: [71, 85, 105],
-  //       textColor: 255,
-  //       fontSize: 10,
-  //     },
-  //     styles: {
-  //       fontSize: 9,
-  //       cellPadding: 5,
-  //     },
-  //     columnStyles: {
-  //       0: { cellWidth: 60 },
-  //       1: { cellWidth: 60 },
-  //       2: { cellWidth: 60 },
-  //     },
-  //   });
-
-  //   // Descripción
-  //   if (descripcion) {
-  //     doc.setFontSize(10);
-  //     doc.text("Descripción:", 20, doc.autoTable.previous.finalY + 15);
-  //     doc.setFont("helvetica", "normal");
-  //     doc.text(descripcion, 20, doc.autoTable.previous.finalY + 22);
-  //   }
-
-  //   // Total y estado
-  //   doc.setFont("helvetica", "bold");
-  //   doc.setFontSize(12);
-  //   doc.text(
-  //     `Total: $ ${Number(total).toLocaleString("es-AR")}`,
-  //     150,
-  //     doc.autoTable.previous.finalY + 30,
-  //     { align: "right" }
-  //   );
-  //   doc.setFontSize(10);
-  //   doc.text(`Estado: ${estadoPago}`, 150, doc.autoTable.previous.finalY + 37, {
-  //     align: "right",
-  //   });
-
-  //   // Línea de firma
-  //   const firmaY = doc.autoTable.previous.finalY + 60;
-  //   doc.line(20, firmaY, 80, firmaY);
-  //   doc.setFontSize(9);
-  //   doc.text("Firma y Aclaración", 50, firmaY + 5, { align: "center" });
-
-  //   // Pie de página
-  //   doc.setFontSize(8);
-  //   doc.setFont("helvetica", "normal");
-  //   doc.text("Documento generado electrónicamente", 105, 280, {
-  //     align: "center",
-  //   });
-
-  //   // Descargar PDF
-  //   doc.save(`recibo_${datosFactura.numFactura}.pdf`);
-  //   const pdfBase64 = doc.output("datauristring");
-  
-  //   // Llamar a la función para enviar el PDF al backend
-  //   enviarPDFAlBackend(pdfBase64);
-  // };
 
   const generarReciboPDF = (pagoData) => {
     const doc = new jsPDF();
@@ -375,53 +232,53 @@ export default function Pagos() {
 
     // Datos del cliente
     const clienteData = [
-        [
-            { content: "Cliente:", styles: { fontStyle: "bold" } },
-            pagoData.factura.cliente.nombreCliente,
-            { content: "CUIT:", styles: { fontStyle: "bold" } },
-            pagoData.factura.cliente.cuitCliente,
-        ],
-        [
-            { content: "Email:", styles: { fontStyle: "bold" } },
-            pagoData.factura.cliente.correo_electronico_cliente,
-            { content: "Factura N°:", styles: { fontStyle: "bold" } },
-            pagoData.factura.numeroFactura,
-        ],
+      [
+        { content: "Cliente:", styles: { fontStyle: "bold" } },
+        pagoData.factura.cliente.nombreCliente,
+        { content: "CUIT:", styles: { fontStyle: "bold" } },
+        pagoData.factura.cliente.cuitCliente,
+      ],
+      [
+        { content: "Email:", styles: { fontStyle: "bold" } },
+        pagoData.factura.cliente.correo_electronico_cliente,
+        { content: "Factura N°:", styles: { fontStyle: "bold" } },
+        pagoData.factura.numeroFactura,
+      ],
     ];
 
     doc.autoTable({
-        startY: 85,
-        head: [],
-        body: clienteData,
-        theme: "plain",
-        styles: {
-            fontSize: 10,
-            cellPadding: 5,
-        },
+      startY: 85,
+      head: [],
+      body: clienteData,
+      theme: "plain",
+      styles: {
+        fontSize: 10,
+        cellPadding: 5,
+      },
     });
 
     // Detalle de pagos
     const formasPagoData = pagoData.formas_de_pago.map((pago) => [
-        pago.metodo,
-        `$ ${Number(pago.monto).toLocaleString("es-AR")}`,
-        pago.nro_operacion,
+      pago.metodo,
+      `$ ${Number(pago.monto).toLocaleString("es-AR")}`,
+      pago.nro_operacion,
     ]);
 
     doc.autoTable({
-        startY: doc.autoTable.previous.finalY + 20,
-        head: [["Forma de Pago", "Monto", "N° de Operación"]],
-        body: formasPagoData,
-        theme: "striped",
+      startY: doc.autoTable.previous.finalY + 20,
+      head: [["Forma de Pago", "Monto", "N° de Operación"]],
+      body: formasPagoData,
+      theme: "striped",
     });
 
     // Total
     doc.text("Total a Pagar: ", 20, doc.autoTable.previous.finalY + 10);
     doc.text(
-        "$ " + pagoData.total.toLocaleString("es-AR"),
-        80,
-        doc.autoTable.previous.finalY + 10
+      "$ " + pagoData.total.toLocaleString("es-AR"),
+      80,
+      doc.autoTable.previous.finalY + 10
     );
-   
+
     const firmaY = doc.autoTable.previous.finalY + 60;
     doc.line(20, firmaY, 80, firmaY);
     doc.setFontSize(9);
@@ -440,10 +297,10 @@ export default function Pagos() {
     localStorage.setItem(clave, pdfBase64);
 
     alert(`Recibo para la factura N° ${pagoData.numeroPago} guardado en localStorage.`);
-};
+  };
 
-  
-  
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 mt-16">
       <div className="text-center mb-6">
@@ -471,11 +328,26 @@ export default function Pagos() {
                 required
               />
               <InputField
+                label="Número de Pago"
+                id="numeroPago"
+                name="numeroPago"
+                value={numeroPago}
+                onChange={(e) => setNumeroPago(e.target.value)}
+                required
+              />
+              <InputField
                 label="Total de la factura"
                 id="monto_factura"
                 name="monto_factura"
                 value={datosFactura.monto_factura}
                 disabled
+              />
+              <InputField
+                label="Deuda"
+                id="deuda"
+                name="deuda"
+                value={datosFactura.deuda}
+                readOnly
               />
               <InputField
                 label="Fecha de la factura"
@@ -594,8 +466,8 @@ export default function Pagos() {
               Agregar Forma de Pago
             </button>
           </div>
-
-          <div className="border-b border-gray-200 pb-6">
+          {/* ya no es necesario es estado y el detalle*/}
+          {/* <div className="border-b border-gray-200 pb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Estado del Pago
             </h2>
@@ -612,9 +484,9 @@ export default function Pagos() {
               ]}
               required
             />
-          </div>
+          </div> */}
 
-          <div className="border-b border-gray-200 pb-6">
+          {/* <div className="border-b border-gray-200 pb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Descripción
             </h2>
@@ -625,7 +497,7 @@ export default function Pagos() {
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
             ></textarea>
-          </div>
+          </div> */}
 
           <div className="flex justify-between items-center">
             <div className="font-bold text-xl text-gray-800">
@@ -645,7 +517,7 @@ export default function Pagos() {
             >
               {loading ? "Cargando..." : "Realizar Pago"}
             </button>
-            
+
           </div>
         </form>
       </div>
