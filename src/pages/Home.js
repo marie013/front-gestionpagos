@@ -7,9 +7,20 @@ export default function AdminDashboard() {
   const [cantidadClientes, setCantidadClientes] = useState(0); 
   const [cantidadFacturas, setCantidadFacturas] = useState(0); 
   const [cantidadPagosPendientes, setCantidadPagosPendientes] = useState(0);
+  const [ultimosPagos, setUltimosPagos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const getStatusColor = (status) => {
+    switch (status) {
+        case "Completo":
+            return "bg-green-100 text-green-800";
+        case "Pendiente":
+            return "bg-yellow-100 text-yellow-800";
+        default:
+            return "bg-gray-100 text-gray-800";
+    }
+};
   useEffect(() => {
     const fetchEntidad = async () => {
       try {
@@ -54,11 +65,25 @@ export default function AdminDashboard() {
         setError('Error al cargar la cantidad de pagos pendientes.');
       }
     };
+    
+    const fetchUltimosPagos = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:8082/gestion-de-pagos/ultimosPagos',
+          { params: { cantidad: 4 } } 
+        );
+        setUltimosPagos(response.data); 
+      } catch (err) {
+        console.error('Error al cargar los últimos pagos:', err);
+        setError('Error al cargar los últimos pagos.');
+      }
+    };
 
     fetchEntidad();
     fetchCantidadClientes();
     fetchCantidadFacturas();
     fetchCantidadPagosPendientes();
+    fetchUltimosPagos();
   }, []); // Asegúrate de que esta función se ejecute solo una vez al montar el componente
 
   if (loading) return <div>Cargando...</div>;
@@ -161,7 +186,7 @@ export default function AdminDashboard() {
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID de Orden</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
@@ -169,33 +194,19 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
+            {ultimosPagos.map((pago, index) => (
               <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#12345</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">John Doe</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Oct 2, 2024</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$500</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{pago.id_pago}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{pago.factura?.cliente?.nombreCliente}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(pago.fecha).toLocaleDateString()}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${pago.total.toFixed(2)}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completado</span>
+                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(pago.estadoPago)}`}>
+                                            {pago.estadoPago}
+                                        </span>
                 </td>
               </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#12346</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jane Smith</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Oct 3, 2024</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$750</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100  text-yellow-800">Pendiente</span>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#12347</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Alice Johnson</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Oct 4, 2024</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1000</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">En Proceso</span>
-                </td>
-              </tr>
+              ))}
             </tbody>
           </table>
         </div>
