@@ -8,7 +8,6 @@ import RegistrarCliente from './pages/clientes/RegistrarCliente';
 import Proveedores from './pages/Proveedores';
 import Login from './components/Login';
 import Comprobantes from './pages/comprobantes';
-import Recibo from './components/recibo';
 import { AutContext } from './context/AutContext';
 import EditarCliente from './pages/clientes/EditarCliente';
 import RegistrarFactura from './pages/RegistrarFactura';
@@ -37,7 +36,6 @@ function App() {
           <Route path="/pagos" element={<ProtectedRoute><Comprobantes /></ProtectedRoute>} />
           <Route path="/registrarFactura" element={<ProtectedRoute><RegistrarFactura/></ProtectedRoute>} />
           <Route path="/proveedores" element={<ProtectedRoute><Proveedores /></ProtectedRoute>} />
-          <Route path="/recibo" element={<ProtectedRoute><Recibo /></ProtectedRoute>} />
         </Routes>
       </div>
     </Router>
