@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NumericFormat } from "react-number-format";
-
+import { Link } from "react-router-dom";
 export default function Facturas() {
   const urlBase = "http://localhost:8082/gestion-de-pagos/facturas";
   const [facturas, setFacturas] = useState([]);
@@ -37,6 +37,14 @@ export default function Facturas() {
         <header className="bg-white shadow-md rounded-lg mb-6">
           <div className="flex items-center justify-between px-4 py-3">
             <h1 className="text-2xl font-bold text-indigo-700">Facturas</h1>
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/registrarFactura"
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out"
+              >
+                Registrar Factura
+              </Link>
+            </div>
           </div>
         </header>
 

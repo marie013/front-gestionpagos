@@ -1,7 +1,7 @@
 import React from 'react';
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
-import { IoDocumentText, IoArchive, IoBusiness } from "react-icons/io5";
+import { IoDocumentText, IoBusiness } from "react-icons/io5";
 // 17:32
 export const SidebarData= [
     {
@@ -40,6 +40,13 @@ export const SidebarData= [
         icon: <IoIcons.IoMdPeople/>,
         cName: 'nav-text'
     },
+    {
+        title:'Facturas',
+        path:'/facturas',
+        icon: <IoIcons.IoMdListBox/>,
+        cName: 'nav-text'
+        },
+        
     {
         title:'Pagos',
         path:'/pagos',

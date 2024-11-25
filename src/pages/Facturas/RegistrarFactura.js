@@ -144,10 +144,22 @@ export default function RegistrarFactura() {
                     </select>
                 </div>
 
-                <div className='text-center mt-6'>
-                    <button type="submit" className="bg-blue-700 text-white px-4 py-2 rounded-md text-sm mr-3">Registrar</button>
-                    <a href='/home' className='bg-red-500 text-white px-6 py-2 rounded-md text-sm mr-3'>Regresar</a>
-                </div>
+                <div className="col-span-2 flex justify-between mt-8">
+            <button
+              type="button"
+              onClick={() => navigate('/home')}
+              className="bg-red-500 text-white px-4 py-2 rounded mt-4 hover:bg-red-600"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600"
+            >
+              Registrar
+            </button>
+            
+          </div>
             </form>
         </div>
     );

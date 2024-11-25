@@ -632,12 +632,20 @@ export default function Pagos() {
               Total: ${total.toFixed(2)}
             </div>
             <button
+              type="button"
+              onClick={() => navigate('/home')}
+              className="bg-red-500 text-white px-4 py-2 rounded mt-4 hover:bg-red-600"
+            >
+              Cancelar
+            </button>
+            <button
               type="submit"
-              className="bg-green-500 text-white rounded-full px-6 py-2"
+              className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600"
               disabled={loading}
             >
               {loading ? "Cargando..." : "Realizar Pago"}
             </button>
+            
           </div>
         </form>
       </div>

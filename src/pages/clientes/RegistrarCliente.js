@@ -11,14 +11,14 @@ export default function RegistrarCliente() {
   const [cliente, setCliente] = useState({
     nombreCliente: "",
     rubro: "",
-    cuit_cliente: "",
+    cuitCliente: "",
     direccion_cliente: "",
     telefono_cliente: "",
     razon_social_cliente: "",
     correo_electronico_cliente: ""
   });
 
-  const { nombreCliente, rubro, cuit_cliente, direccion_cliente, telefono_cliente, razon_social_cliente, correo_electronico_cliente } = cliente;
+  const { nombreCliente, rubro, cuitCliente, direccion_cliente, telefono_cliente, razon_social_cliente, correo_electronico_cliente } = cliente;
 
   const onInputChange = (e) => {
     setCliente({ ...cliente, [e.target.name]: e.target.value });
@@ -67,9 +67,9 @@ export default function RegistrarCliente() {
             <label htmlFor="cuit_cliente" className="block text-sm font-medium text-gray-700">CUIT</label>
             <input
               type="text"
-              id="cuit_cliente"
-              name="cuit_cliente"
-              value={cuit_cliente}
+              id="cuitCliente"
+              name="cuitCliente"
+              value={cuitCliente}
               onChange={onInputChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
@@ -121,19 +121,20 @@ export default function RegistrarCliente() {
           </div>
 
           <div className="col-span-2 flex justify-between mt-8">
-            <button
-              type="submit"
-              className="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
-            >
-              Registrar
-            </button>
-            <button
+          <button
               type="button"
-              onClick={() => navigate('/clientes')}
-              className="inline-flex items-center px-6 py-3 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+              onClick={() => navigate('/home')}
+              className="bg-red-500 text-white px-4 py-2 rounded mt-4 hover:bg-red-600"
             >
               Cancelar
             </button>
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600"
+            >
+              Registrar
+            </button>
+            
           </div>
         </form>
       </div>

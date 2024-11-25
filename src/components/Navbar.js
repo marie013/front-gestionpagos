@@ -17,7 +17,7 @@ export default function Navbar() {
             <FaIcons.FaBars onClick={showSidebar} className="icon-large" />
           </Link>
           <div className="navbar-title">
-            <Link to="/home">Gestión de pagos</Link></div>
+            <Link to="/home">Sistema de Cobranza</Link></div>
         </div>
         <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
           <ul className="nav-menu-items" onClick={showSidebar}>

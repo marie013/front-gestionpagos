@@ -12,7 +12,7 @@ export default function EditarCliente() {
   const [cliente, setCliente] = useState({
     nombreCliente: "",
     rubro: "",
-    cuit_cliente: "",
+    cuitCliente: "",
     direccion_cliente: "",
     telefono_cliente: "",
     razon_social_cliente: "",
@@ -22,7 +22,7 @@ export default function EditarCliente() {
   const {
     nombreCliente,
     rubro,
-    cuit_cliente,
+    cuitCliente,
     direccion_cliente,
     telefono_cliente,
     razon_social_cliente,
@@ -92,9 +92,9 @@ export default function EditarCliente() {
             <label htmlFor="cuit_cliente" className="block text-sm font-medium text-gray-700">CUIT</label>
             <input
               type="text"
-              id="cuit_cliente"
-              name="cuit_cliente"
-              value={cuit_cliente}
+              id="cuitCliente"
+              name="cuitCliente"
+              value={cuitCliente}
               onChange={onInputChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />

@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 
 export default function AdminDashboard() {
   const [entidad, setEntidad] = useState('');
-  const [cantidadClientes, setCantidadClientes] = useState(0); // Nuevo estado para la cantidad de clientes
+  const [cantidadClientes, setCantidadClientes] = useState(0); 
+  const [cantidadFacturas, setCantidadFacturas] = useState(0); 
+  const [cantidadPagosPendientes, setCantidadPagosPendientes] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -31,9 +33,32 @@ export default function AdminDashboard() {
         console.error(err);
       }
     };
+    const fetchCantidadFacturas = async () => {
+      try {
+        const response = await axios.get('http://localhost:8082/gestion-de-pagos/facturas/cantidad'); 
+        setCantidadFacturas(response.data); 
+      } catch (err) {
+        setError('Error al cargar la cantidad de facturas.');
+        console.error(err);
+      }
+    };
+
+    const fetchCantidadPagosPendientes = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:8082/gestion-de-pagos/pagosContadosPorEstado/pendiente'
+        ); // Cambia la URL según tu configuración del backend
+        setCantidadPagosPendientes(response.data); // Actualiza el estado con la cantidad
+      } catch (err) {
+        console.error('Error al cargar los pagos pendientes:', err);
+        setError('Error al cargar la cantidad de pagos pendientes.');
+      }
+    };
 
     fetchEntidad();
     fetchCantidadClientes();
+    fetchCantidadFacturas();
+    fetchCantidadPagosPendientes();
   }, []); // Asegúrate de que esta función se ejecute solo una vez al montar el componente
 
   if (loading) return <div>Cargando...</div>;
@@ -76,6 +101,18 @@ export default function AdminDashboard() {
                 Pagos
               </Link>
             </li>
+            <li>
+  <Link to="/facturas" className="flex items-center px-3 py-2 text-gray-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-lg">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-2">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+    </svg>
+    Facturas
+  </Link>
+</li>
           </ul>
         </nav>
 
@@ -87,8 +124,8 @@ export default function AdminDashboard() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
             </div>
-            <p className="text-3xl font-bold text-gray-800">{cantidadClientes}</p> {/* Mostrar la cantidad de clientes */}
-            <p className="text-sm text-gray-500 mt-2">+2.1% desde el mes pasado</p>
+            <p className="text-3xl font-bold text-gray-800">{cantidadClientes}</p>
+            
           </div>
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
@@ -97,26 +134,30 @@ export default function AdminDashboard() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
             </svg>
           </div>
-          <p className="text-3xl font-bold text-gray-800">230</p>
-          <p className="text-sm text-gray-500 mt-2">-4.5% desde la semana pasada</p>
+          <p className="text-3xl font-bold text-gray-800">{cantidadPagosPendientes}</p> 
+          
         </div>
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-700">Órdenes Activas</h2>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-            </svg>
+            <h2 className="text-lg font-semibold text-gray-700">Facturas</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 mr-2 text-blue-500">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+    </svg>
           </div>
-          <p className="text-3xl font-bold text-gray-800">320</p>
-          <p className="text-sm text-gray-500 mt-2">+12% desde ayer</p>
+          <p className="text-3xl font-bold text-gray-800">{cantidadFacturas}</p>
+          
         </div>
       </section>
 
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        {/* <div className="px-6 py-4 border-b border-gray-200">
+        <div className="px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-800">Pagos Recientes</h2>
-        </div> */}
-        {/* <div className="overflow-x-auto">
+        </div>
+        <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
@@ -157,7 +198,7 @@ export default function AdminDashboard() {
               </tr>
             </tbody>
           </table>
-        </div> */}
+        </div>
       </div>
     </div>
     </div>

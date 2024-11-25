@@ -36,7 +36,7 @@ function App() {
           <Route path="/registrar-proveedor" element={<ProtectedRoute><RegistrarCliente /></ProtectedRoute>} />
           <Route path="/pagos" element={<ProtectedRoute><Comprobantes /></ProtectedRoute>} />
           <Route path="/registrarFactura" element={<ProtectedRoute><RegistrarFactura /></ProtectedRoute>} />
-          <Route path="/listarFacturas" element={<Facturas />} />
+          <Route path="/facturas" element={<Facturas />} />
           <Route path="/proveedores" element={<ProtectedRoute><Proveedores /></ProtectedRoute>} />
         </Routes>
       </div>

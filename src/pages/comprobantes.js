@@ -1,7 +1,7 @@
 // Comprobantes.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 export default function Comprobantes() {
     const [pagos, setPagos] = useState([]);
 
@@ -57,6 +57,20 @@ export default function Comprobantes() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 mt-16">
+            <div className="max-w-7xl mx-auto">
+            <header className="bg-white shadow-md rounded-lg mb-6">
+          <div className="flex items-center justify-between px-4 py-3">
+            <h1 className="text-2xl font-bold text-indigo-700">Pagos</h1>
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/registrarPago"
+                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out"
+              >
+                Realizar Pago
+              </Link>
+            </div>
+          </div>
+        </header>
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
                 <div className="border-b border-gray-200 p-6">
                     <h1 className="text-2xl font-bold text-gray-900 text-center">
@@ -105,6 +119,7 @@ export default function Comprobantes() {
                         </tbody>
                     </table>
                 </div>
+            </div>
             </div>
         </div>
     );
