@@ -11,7 +11,8 @@ import Comprobantes from './pages/comprobantes';
 import Recibo from './components/recibo';
 import { AutContext } from './context/AutContext';
 import EditarCliente from './pages/clientes/EditarCliente';
-import RegistrarFactura from './pages/RegistrarFactura';
+import RegistrarFactura from './pages/Facturas/RegistrarFactura';
+import Facturas from './pages/Facturas/ListarFacturas';
 import Entidad from './pages/Entidad';
 
 function App() {
@@ -31,11 +32,12 @@ function App() {
           <Route path="/entidad" element={<ProtectedRoute><Entidad /></ProtectedRoute>} />
           <Route path="/registrarPago" element={<ProtectedRoute><RegistrarPago /></ProtectedRoute>} />
           <Route path="/clientes" element={<><Clientes /></>} />
-          <Route path="/editar/:id" element={<ProtectedRoute><EditarCliente/></ProtectedRoute>} />
+          <Route path="/editar/:id" element={<ProtectedRoute><EditarCliente /></ProtectedRoute>} />
           <Route path="/registrarCliente" element={<ProtectedRoute><RegistrarCliente /></ProtectedRoute>} />
           <Route path="/registrar-proveedor" element={<ProtectedRoute><RegistrarCliente /></ProtectedRoute>} />
           <Route path="/pagos" element={<ProtectedRoute><Comprobantes /></ProtectedRoute>} />
-          <Route path="/registrarFactura" element={<ProtectedRoute><RegistrarFactura/></ProtectedRoute>} />
+          <Route path="/registrarFactura" element={<ProtectedRoute><RegistrarFactura /></ProtectedRoute>} />
+          <Route path="/listarFacturas" element={<Facturas />} />
           <Route path="/proveedores" element={<ProtectedRoute><Proveedores /></ProtectedRoute>} />
           <Route path="/recibo" element={<ProtectedRoute><Recibo /></ProtectedRoute>} />
         </Routes>
