@@ -1,6 +1,5 @@
 'use client'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import { Card, CardContent, CardHeader, CardTitle } from "../components/Card"
 import { Building2, Mail, Phone, MapPin } from 'lucide-react'
 import { Link } from 'react-router-dom';
@@ -11,36 +10,36 @@ export default function Entidad()
       );
   const [entidad, setEntidad] = useState(null) 
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null) 
 
   useEffect(() => {
-    const fetchEntidad = async () => {
-      try {
-        const response = await axios.get('http://localhost:8082/gestion-de-pagos/entidad') 
-        const data = response.data[0] 
-        setEntidad(data)
-      } catch (err) {
-        setError('Error al cargar los datos de la entidad.')
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
+    const fetchEntidadFromCookies = () => {
+      const cookies = document.cookie.split('; ').reduce((acc, current) => {
+        const [key, value] = current.split('=');
+        acc[key] = decodeURIComponent(value);
+        return acc;
+      }, {});
 
-    fetchEntidad()
-  }, [])
+      // Construir objeto entidad desde las cookies
+      const entidadData = {
+        nombreEntidad: cookies.nombreEntidad || "No disponible",
+        cuitEntidad: cookies.cuitEntidad || "No disponible",
+        correoElectronicoEntidad: cookies.correoElectronicoEntidad || "No disponible",
+        telefono_entidad: cookies.telefonoEntidad || "No disponible",
+        razon_social_entidad: cookies.razonSocialEntidad || "No disponible",
+        direccion_entidad: cookies.direccionEntidad || "No disponible",
+      };
+
+      setEntidad(entidadData);
+      setLoading(false);
+    };
+
+    fetchEntidadFromCookies();
+  }, []);
 
   if (loading) {
     return <p className="text-center text-gray-600">Cargando...</p>
   }
 
-  if (error) {
-    return <p className="text-center text-red-500">{error}</p>
-  }
-
-  if (!entidad) {
-    return <p className="text-center text-gray-600">No hay información disponible.</p>
-  }
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 mt-16'>
