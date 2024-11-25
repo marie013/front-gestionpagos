@@ -13,7 +13,7 @@ import EditarCliente from './pages/clientes/EditarCliente';
 import RegistrarFactura from './pages/Facturas/RegistrarFactura';
 import Facturas from './pages/Facturas/ListarFacturas';
 import Entidad from './pages/Entidad';
-
+ 
 function App() {
   const { esAutenticado } = useContext(AutContext);
 
