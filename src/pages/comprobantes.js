@@ -135,9 +135,9 @@ export default function Comprobantes() {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <button
                                                 onClick={() => verComprobante(pago.numeroPago)}
-                                                className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline border-none rounded-none"
+                                                className="text-amber-500 hover:text-amber-900 focus:outline-none focus:underline border-none rounded-none"
                                             >
-                                                Ver
+                                                Ver PDF
                                             </button>
                                         </td>
                                     </tr>

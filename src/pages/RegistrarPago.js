@@ -199,58 +199,65 @@ useEffect(() => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!validarFormulario()) {
-      return;
+        return;
     }
 
-
     const pagoData = {
-      //se habia puesto:numeroPago: datosFactura.numFactura,
-      numeroPago,
-      fecha_pago: new Date(fecha_pago).toISOString().split("T")[0], // Formato ISO: YYYY-MM-DD
-      total: total,
-      deuda: datosFactura.deuda,
-      factura: {
-        id_factura: datosFactura.numFactura,
-        monto_factura: datosFactura.monto_factura,
-        fecha_factura: datosFactura.fecha_factura,
-        numeroFactura: datosFactura.numFactura,
-        cliente: datosFactura.cliente,
-      },
-      formas_de_pago: formas_de_pago.map((fp) => ({
-        metodo: fp.tipo,
-        monto: parseFloat(fp.monto),
-        nro_operacion: fp.num_pago,
-      })),
+        numeroPago,
+        fecha_pago: new Date(fecha_pago).toISOString().split("T")[0],
+        total: total,
+        deuda: datosFactura.deuda,
+        factura: {
+            id_factura: datosFactura.numFactura,
+            monto_factura: datosFactura.monto_factura,
+            fecha_factura: datosFactura.fecha_factura,
+            numeroFactura: datosFactura.numFactura,
+            cliente: datosFactura.cliente,
+        },
+        formas_de_pago: formas_de_pago.map((fp) => ({
+            metodo: fp.tipo,
+            monto: parseFloat(fp.monto),
+            nro_operacion: fp.num_pago,
+        })),
     };
 
     try {
-      setLoading(true);
-      const response = await axios.post(
-        "http://localhost:8082/gestion-de-pagos/pagos/realizar-pago",
-        pagoData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+        setLoading(true);
+        const response = await axios.post(
+            "http://localhost:8082/gestion-de-pagos/pagos/realizar-pago",
+            pagoData,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        if (response.status === 200 || response.status === 201) {
+            alert("Pago registrado exitosamente");
+            generarReciboPDF(pagoData, entidad);
+
+            // Mostrar el segundo mensaje después del primero
+            setTimeout(() => {
+                alert(`Recibo para la factura N° ${pagoData.numeroPago} guardado en localStorage.`);
+
+                // Redirigir después del segundo mensaje
+                setTimeout(() => {
+                    navigate("/pagos");
+                }, 500); // Retraso opcional para la redirección
+            }, 500); // Retraso entre las alertas
         }
-      );
-
-      if (response.status === 200 || response.status === 201) {
-        alert("Pago registrado exitosamente");
-        navigate("/RegistrarPago");
-      }
     } catch (error) {
-      console.error("Error al realizar el pago:", error);
-      alert(
-        "Error al realizar el pago: " +
-        (error.response?.data?.message || error.message)
-      );
+        console.error("Error al realizar el pago:", error);
+        alert(
+            "Error al realizar el pago: " +
+            (error.response?.data?.message || error.message)
+        );
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-    generarReciboPDF(pagoData, entidad);
+};
 
-  };
 
 
   const generarReciboPDF = (pagoData, entidad) => {
@@ -342,9 +349,7 @@ useEffect(() => {
     const clave = `recibo_${pagoData.numeroPago}`; // Usamos el número de recibo como clave
     localStorage.setItem(clave, pdfBase64);
 
-    alert(`Recibo para la factura N° ${pagoData.numeroPago} guardado en localStorage.`);
   };
-
 
 
   return (

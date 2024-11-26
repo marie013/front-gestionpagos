@@ -110,7 +110,7 @@ export default function Facturas() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                       <button
                         onClick={() => handleVer(factura)}
-                        className="text-indigo-600 hover:text-indigo-900 mr-2"
+                        className="text-yellow-500 hover:text-yellow-600 transition font-medium mr-2"
                       >
                         Ver
                       </button>
@@ -118,7 +118,7 @@ export default function Facturas() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                       <button
                         onClick={() => navigate(`/registrarPago?numeroFactura=${factura.numeroFactura}`)}
-                        className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 transition">
+                        className="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 transition duration-200">
                         Pagar
                       </button>
                     </td>

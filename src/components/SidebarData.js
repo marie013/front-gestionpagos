@@ -16,10 +16,11 @@ export const SidebarData= [
         icon: <IoBusiness/>,
         cName: 'nav-text'
     },
+    
     {
-        title:'Registrar pago',
-        path:'/registrarPago',
-        icon: <IoIcons.IoIosPaper/>,
+        title:'Registrar cliente',
+        path:'/registrarCliente',
+        icon: <IoIcons.IoMdPersonAdd/>,
         cName: 'nav-text'
     },
     {
@@ -29,11 +30,12 @@ export const SidebarData= [
         cName: 'nav-text'
     },
     {
-        title:'Registrar cliente',
-        path:'/registrarCliente',
-        icon: <IoIcons.IoMdPersonAdd/>,
+        title:'Registrar pago',
+        path:'/registrarPago',
+        icon: <IoIcons.IoIosPaper/>,
         cName: 'nav-text'
     },
+    
     {
         title:'Clientes',
         path:'/clientes',
