@@ -38,7 +38,6 @@ export default function Comprobantes() {
         setFacturaSeleccionada(null);
         setMostrarModal(false);
     };
-
     // Función para determinar el color según el estado del pago
     const getStatusColor = (status) => {
         switch (status) {
@@ -65,8 +64,8 @@ export default function Comprobantes() {
     };
 
     // Función para ver el comprobante en el frontend
-    const verComprobante = (numeroPago) => {
-        const pdfBase64 = localStorage.getItem(`recibo_${numeroPago}`);
+    const verComprobante = (numeroFactura) => {
+        const pdfBase64 = localStorage.getItem(`recibo_${numeroFactura}`);
         if (pdfBase64) {
             const newWindow = window.open();
             newWindow.document.write(`
@@ -147,48 +146,6 @@ export default function Comprobantes() {
                         </table>
                     </div>
                 </div>
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CUIT</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {pagos.map((pago, index) => (
-                                <tr key={index} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatDate(pago.fecha_pago)}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">{pago.descripcion || "Sin descripción"}</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${pago.total || "0.00"}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(pago.estadoPago)}`}>
-                                            {pago.estadoPago}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.factura?.cliente?.nombreCliente}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.factura?.cliente?.cuitCliente}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button
-                                            onClick={() => verComprobante(pago.numeroPago)}
-                                            className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline border-none rounded-none"
-                                        >
-                                            Ver
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
             </div>
             {/* Modal */}
             {mostrarModal && facturaSeleccionada && (

@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NumericFormat } from "react-number-format";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
 export default function Facturas() {
   const urlBase = "http://localhost:8082/gestion-de-pagos/facturas";
   const [facturas, setFacturas] = useState([]);
   const [facturaSeleccionada, setFacturaSeleccionada] = useState(null); // Estado para la factura seleccionada
   const [mostrarModal, setMostrarModal] = useState(false); // Estado para mostrar/ocultar el modal
+  const navigate = useNavigate();
 
   useEffect(() => {
     listarFacturas();
@@ -30,6 +34,11 @@ export default function Facturas() {
     setFacturaSeleccionada(null);
     setMostrarModal(false);
   };
+  const handlePagar = (numeroFactura) => {
+    // Redirige usando useNavigate
+    navigate(`/registrarPago?numeroFactura=${numeroFactura}`);
+  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 mt-16">
@@ -113,6 +122,14 @@ export default function Facturas() {
                         Ver
                       </button>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+                      <button
+                        onClick={() => navigate(`/registrarPago?numeroFactura=${factura.numeroFactura}`)}
+                        className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 transition">
+                        Pagar
+                      </button>
+                    </td>
+
                   </tr>
                 ))}
               </tbody>
@@ -152,7 +169,7 @@ export default function Facturas() {
                 value={facturaSeleccionada.monto_factura}
                 displayType={"text"}
                 thousandSeparator={true}
-                prefix={"$"}/>
+                prefix={"$"} />
             </p>
             <p>
               <strong>Deuda:</strong>{" "}
@@ -160,7 +177,7 @@ export default function Facturas() {
                 value={facturaSeleccionada.deuda}
                 displayType={"text"}
                 thousandSeparator={true}
-                prefix={"$"}/>
+                prefix={"$"} />
             </p>
             <div className="mt-6 flex justify-end">
               <button

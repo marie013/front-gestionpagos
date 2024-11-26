@@ -1,11 +1,16 @@
+// Comprobantes.js
 import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 export default function Pagos() {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const numeroFactura = params.get('numeroFactura'); // Obtener el valor de "numeroFactura"
+
   const navigate = useNavigate();
   const [fecha_pago, setFechaPago] = useState("");
   const [numeroPago, setNumeroPago] = useState("");//
@@ -99,6 +104,14 @@ export default function Pagos() {
       setLoading(false);
     }
   };
+
+  // Inicializa el número de factura si está en la URL
+  useEffect(() => {
+    if (numeroFactura) {
+      setDatosFactura((prev) => ({ ...prev, numFactura: numeroFactura }));
+      buscarFacturaPorNumero(numeroFactura);
+    }
+  }, [numeroFactura]);
 
   const handleDatosFacturaChange = (event) => {
     const { name, value } = event.target;
@@ -280,7 +293,7 @@ export default function Pagos() {
     // Detalle de pagos
     const formasPagoData = pagoData.formas_de_pago.map((pago) => [
       pago.metodo,
-      `$ ${Number(pago.monto).toLocaleString("es-AR")}`,
+     ` $ ${Number(pago.monto).toLocaleString("es-AR")}`,
       pago.nro_operacion,
     ]);
 
@@ -329,23 +342,16 @@ export default function Pagos() {
           className="max-w-4xl mx-auto space-y-8 p-6 bg-white shadow-lg rounded-xl"
         >
           <div className="border-b border-gray-200 pb-6">
-            {/* <h1 className="text-3xl font-bold text-gray-900 mb-6">Datos de la Factura</h1>
+             <h1 className="text-3xl font-bold text-gray-900 mb-6">Datos de la Factura</h1>
             <h1 className="text-3xl font-bold text-gray-800">
               Distribuidora Carlos SA
             </h1>
             <p className="text-gray-600">CUIT: 26-17142180-0</p>
             <p className="text-gray-600">
               Calle Retama Mc-c3, Villa Tulumaya, Lavalle, Mendoza
-            </p> */}
-               <div className="space-y-2 flex flex-col ">
-              <p><Building2 className="inline mr-2" />{entidad.nombreEntidad}</p>
-              <p>CUIT: {entidad.cuitEntidad}</p>
-              <p><Mail className="inline mr-2" />{entidad.correoElectronicoEntidad}</p>
-              <p><Phone className="inline mr-2" />{entidad.telefono_entidad}</p>
-              <p>Razón Social: {entidad.razon_social_entidad}</p>
-              <p><MapPin className="inline mr-2" />{entidad.direccion_entidad}</p>
-            
-            </div>
+            </p> 
+         
+    
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <InputField
@@ -495,39 +501,6 @@ export default function Pagos() {
               Agregar Forma de Pago
             </button>
           </div>
-          {/* ya no es necesario es estado y el detalle*/}
-          {/* <div className="border-b border-gray-200 pb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Estado del Pago
-            </h2>
-            <SelectField
-              label="Estado del Pago"
-              id="estadoPago"
-              name="estadoPago"
-              value={estadoPago}
-              onChange={(e) => setEstadoPago(e.target.value)}
-              options={[
-                { value: "", label: "Seleccionar" },
-                { value: "Pendiente", label: "Pendiente" },
-                { value: "Cancelado", label: "Cancelado" },
-              ]}
-              required
-            />
-          </div> */}
-
-          {/* <div className="border-b border-gray-200 pb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Descripción
-            </h2>
-            <textarea
-              className="w-full p-3 border border-gray-300 rounded-lg"
-              rows="4"
-              placeholder="Descripción opcional del pago"
-              value={descripcion}
-              onChange={(e) => setDescripcion(e.target.value)}
-            ></textarea>
-          </div> */}
-
           <div className="flex justify-between items-center">
             <div className="font-bold text-xl text-gray-800">
               Total: ${total.toFixed(2)}
@@ -581,6 +554,6 @@ function SelectField({ label, options, ...props }) {
           </option>
         ))}
       </select>
-    </div>
-  );
+    </div>
+  );
 }
