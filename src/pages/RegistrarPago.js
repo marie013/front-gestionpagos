@@ -2,11 +2,12 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 export default function Pagos() {
+  const [entidad, setEntidad] = useState(null)
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const numeroFactura = params.get('numeroFactura'); // Obtener el valor de "numeroFactura"
@@ -31,31 +32,10 @@ export default function Pagos() {
       id_cliente: "",
     },
   });
-  const [descripcion, setDescripcion] = useState("");
+  
   const [total, setTotal] = useState(0);
-  const [estadoPago, setEstadoPago] = useState("");
   const [loading, setLoading] = useState(false);
 
-
-  const [entidad, setEntidad] = useState(null) 
-  const [error, setError] = useState(null) 
-
-  useEffect(() => {
-    const fetchEntidad = async () => {
-      try {
-        const response = await axios.get('http://localhost:8082/gestion-de-pagos/entidad') 
-        const data = response.data[0] 
-        setEntidad(data)
-      } catch (err) {
-        setError('Error al cargar los datos de la entidad.')
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchEntidad()
-  }, [])
   const buscarFacturaPorNumero = async (numeroFactura) => {
     if (!numeroFactura) return;
 
@@ -104,7 +84,20 @@ export default function Pagos() {
       setLoading(false);
     }
   };
+// obtenemos los numeros de factura en objeto de facturas
+const [facturas, setFactura] = useState([]);
+useEffect(() => {
+  const obtenerFacturas = async () => {
+      try {
+          const response = await axios.get("http://localhost:8082/gestion-de-pagos/facturas");
+          setFactura(response.data); 
+      } catch (error) {
+          console.error("Error al obtener los clientes:", error);
+      }
+  };
 
+  obtenerFacturas(); 
+}, []);
   // Inicializa el número de factura si está en la URL
   useEffect(() => {
     if (numeroFactura) {
@@ -112,6 +105,28 @@ export default function Pagos() {
       buscarFacturaPorNumero(numeroFactura);
     }
   }, [numeroFactura]);
+
+  useEffect(() => {
+    const fetchEntidadFromCookies = () => {
+      const cookies = document.cookie.split('; ').reduce((acc, current) => {
+        const [key, value] = current.split('=');
+        acc[key] = decodeURIComponent(value);
+        return acc;
+      }, {});
+
+      // Construir objeto entidad desde las cookies
+      const entidadData = {
+        cuitEntidad: cookies.cuitEntidad || "No disponible",
+        razon_social_entidad: cookies.razonSocialEntidad || "No disponible",
+        direccion_entidad: cookies.direccionEntidad || "No disponible",
+      };
+
+      setEntidad(entidadData);
+      setLoading(false);
+    };
+
+    fetchEntidadFromCookies();
+  }, []);
 
   const handleDatosFacturaChange = (event) => {
     const { name, value } = event.target;
@@ -192,8 +207,6 @@ export default function Pagos() {
       //se habia puesto:numeroPago: datosFactura.numFactura,
       numeroPago,
       fecha_pago: new Date(fecha_pago).toISOString().split("T")[0], // Formato ISO: YYYY-MM-DD
-      descripcion: descripcion,
-      estadoPago: estadoPago,
       total: total,
       deuda: datosFactura.deuda,
       factura: {
@@ -235,21 +248,21 @@ export default function Pagos() {
     } finally {
       setLoading(false);
     }
-    generarReciboPDF(pagoData);
+    generarReciboPDF(pagoData, entidad);
 
   };
 
 
-  const generarReciboPDF = (pagoData) => {
+  const generarReciboPDF = (pagoData, entidad) => {
     const doc = new jsPDF();
 
     // Encabezado del recibo
     doc.setFont("helvetica", "bold");
     doc.setFontSize(20);
-    doc.text("Distribuidora Carlos SA", 105, 20, { align: "center" });
+    doc.text(`${entidad.razon_social_entidad || "No disponible"}`, 105, 20, { align: "center" });
     doc.setFontSize(10);
-    doc.text("CUIT: 26-17142180-0", 105, 30, { align: "center" });
-    doc.text("Calle Retama Mc-c3, Villa Tulumaya", 105, 35, { align: "center" });
+    doc.text(`CUIT: ${entidad.cuitEntidad || "No disponible"}`, 105, 30, { align: "center" });
+    doc.text(`${entidad.direccion_entidad || "Dirección no disponible"}`, 105, 35, { align: "center" });
     doc.text("Lavalle, Mendoza", 105, 40, { align: "center" });
     doc.setLineWidth(0.5);
     doc.line(20, 45, 190, 45);
@@ -344,11 +357,11 @@ export default function Pagos() {
           <div className="border-b border-gray-200 pb-6">
              <h1 className="text-3xl font-bold text-gray-900 mb-6">Datos de la Factura</h1>
             <h1 className="text-3xl font-bold text-gray-800">
-              Distribuidora Carlos SA
+            {entidad ? entidad.razon_social_entidad : "Cargando..."}
             </h1>
-            <p className="text-gray-600">CUIT: 26-17142180-0</p>
+            <p className="text-gray-600">CUIT: {entidad ? entidad.cuitEntidad : "Cargando..."}</p>
             <p className="text-gray-600">
-              Calle Retama Mc-c3, Villa Tulumaya, Lavalle, Mendoza
+            {entidad ? entidad.direccion_entidad : "Cargando..."}
             </p> 
          
     
@@ -361,7 +374,13 @@ export default function Pagos() {
                 value={datosFactura.numFactura}
                 onChange={handleDatosFacturaChange}
                 required
+                list="facturas-list"
               />
+              <datalist id="facturas-list">
+                {facturas.map((factura, index)=> (
+                  <option key={index} value={factura.numeroFactura}> {factura.numeroFactura}</option>
+                ))}
+              </datalist>
               <InputField
                 label="Número de Pago"
                 id="numeroPago"

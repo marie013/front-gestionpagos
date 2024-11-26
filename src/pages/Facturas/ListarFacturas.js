@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NumericFormat } from "react-number-format";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import jsPDF from "jspdf";
+import { Link, useNavigate } from "react-router-dom";
 import "jspdf-autotable";
 
 export default function Facturas() {
@@ -34,12 +33,6 @@ export default function Facturas() {
     setFacturaSeleccionada(null);
     setMostrarModal(false);
   };
-  const handlePagar = (numeroFactura) => {
-    // Redirige usando useNavigate
-    navigate(`/registrarPago?numeroFactura=${numeroFactura}`);
-  };
-
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 mt-16">
       <div className="max-w-7xl mx-auto">
