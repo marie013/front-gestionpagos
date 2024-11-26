@@ -41,7 +41,7 @@ export default function Comprobantes() {
     // Función para determinar el color según el estado del pago
     const getStatusColor = (status) => {
         switch (status) {
-            case "Pagado":
+            case "Completo":
                 return "bg-green-100 text-green-800";
             case "Pendiente":
                 return "bg-yellow-100 text-yellow-800";
@@ -64,8 +64,8 @@ export default function Comprobantes() {
     };
 
     // Función para ver el comprobante en el frontend
-    const verComprobante = (numeroFactura) => {
-        const pdfBase64 = localStorage.getItem(`recibo_${numeroFactura}`);
+    const verComprobante = (numeroPago) => {
+        const pdfBase64 = localStorage.getItem(`recibo_${numeroPago}`);
         if (pdfBase64) {
             const newWindow = window.open();
             newWindow.document.write(`
@@ -134,7 +134,7 @@ export default function Comprobantes() {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <button
-                                                onClick={() => verComprobante(pago.factura.numeroFactura)}
+                                                onClick={() => verComprobante(pago.numeroPago)}
                                                 className="text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline border-none rounded-none"
                                             >
                                                 Ver
